@@ -87,8 +87,8 @@ export default function FinalCTA() {
                   window.dispatchEvent(event);
                 }}
               >
-                <MessageCircle className="w-5 h-5 mr-2" />
-                Chat With Us Now
+                <CheckCircle2 className="w-5 h-5 mr-2" />
+                Quick Eligibility Check
               </Button>
             </motion.div>
           </div>

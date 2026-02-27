@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Menu, X } from "lucide-react";
+import { CheckCircle2, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Header() {
@@ -54,8 +54,8 @@ export default function Header() {
               onClick={openChat}
               className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold rounded-lg px-5 shadow-none"
             >
-              <MessageCircle className="w-4 h-4 mr-2" />
-              Chat Now
+              <CheckCircle2 className="w-4 h-4 mr-2" />
+              Quick Eligibility Check
             </Button>
           </div>
 
@@ -98,8 +98,8 @@ export default function Header() {
                   onClick={() => { setMobileOpen(false); openChat(); }}
                   className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold w-full"
                 >
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Chat Now
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  Quick Eligibility Check
                 </Button>
               </div>
             </div>

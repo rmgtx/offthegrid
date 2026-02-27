@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { CloudLightning, Clock, Home, DollarSign } from "lucide-react";
+import TexasOutageMap from "@/components/TexasOutageMap";
 
 interface StatCardProps {
   icon: React.ElementType;
@@ -84,9 +85,6 @@ const stats = [
 export default function OutageStats() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
   return (
     <section id="how-it-works" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8" ref={sectionRef}>
@@ -128,18 +126,20 @@ export default function OutageStats() {
           <div className="absolute inset-0 noise-overlay" />
           <div className="absolute top-0 right-0 w-80 h-80 bg-amber/10 rounded-full blur-[100px]" />
 
-          <div className="relative z-10 grid lg:grid-cols-2 gap-10 items-center">
+          <div className="relative z-10 grid lg:grid-cols-[1fr_1.2fr] gap-10 items-center">
             <div>
               <p className="font-heading text-sm font-semibold tracking-widest uppercase text-amber mb-4">
-                Energy Communities
+                Every Season Brings a Threat
               </p>
               <h3 className="font-display text-3xl sm:text-4xl text-white leading-tight mb-4">
-                Is your neighborhood eligible?
+                Your grid is{" "}
+                <span className="text-amber italic">always vulnerable.</span>
               </h3>
               <p className="font-body text-white/60 leading-relaxed mb-6">
-                The federal government has designated specific Energy Communities
-                across Texas that qualify for enhanced tax credit bonuses. Houston
-                (CenterPoint) and Dallas (Oncor) are primary qualifying areas.
+                From winter freezes to summer heat domes and hurricane season,
+                Texas faces year-round threats to its power grid. Houston
+                (CenterPoint) and Dallas (Oncor) are primary qualifying areas
+                for the backup battery program.
               </p>
               <div className="flex flex-wrap gap-3">
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald/10 text-emerald font-heading text-sm font-medium">
@@ -153,49 +153,8 @@ export default function OutageStats() {
               </div>
             </div>
 
-            {/* Simplified Texas map illustration */}
-            <div className="flex items-center justify-center">
-              <svg
-                viewBox="0 0 400 380"
-                className="w-full max-w-xs sm:max-w-sm"
-                fill="none"
-              >
-                {/* Texas outline (simplified) */}
-                <path
-                  d="M120 30 L280 30 L310 60 L330 90 L340 140 L360 180 L370 220 L350 260 L320 300 L280 330 L240 350 L200 360 L160 340 L120 300 L80 280 L60 240 L50 200 L60 140 L80 80 Z"
-                  stroke="rgba(255,255,255,0.15)"
-                  strokeWidth="2"
-                  fill="rgba(255,255,255,0.03)"
-                  className="transition-all"
-                />
-                {/* Houston dot */}
-                <circle cx="260" cy="280" r="8" className="fill-emerald animate-pulse" />
-                <circle cx="260" cy="280" r="16" className="fill-emerald/20" />
-                <text
-                  x="260"
-                  y="310"
-                  textAnchor="middle"
-                  className="fill-white/70 font-heading"
-                  fontSize="12"
-                  fontWeight="500"
-                >
-                  Houston
-                </text>
-                {/* Dallas dot */}
-                <circle cx="220" cy="140" r="8" className="fill-sky animate-pulse" style={{ animationDelay: "1s" }} />
-                <circle cx="220" cy="140" r="16" className="fill-sky/20" />
-                <text
-                  x="220"
-                  y="125"
-                  textAnchor="middle"
-                  className="fill-white/70 font-heading"
-                  fontSize="12"
-                  fontWeight="500"
-                >
-                  Dallas
-                </text>
-              </svg>
-            </div>
+            {/* Animated Texas outage map */}
+            <TexasOutageMap />
           </div>
         </motion.div>
       </div>

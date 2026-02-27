@@ -1,10 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Phone, ArrowRight, MessageCircle, CheckCircle2 } from "lucide-react";
-
-const PHONE_NUMBER = "(832) 555-0199";
-const PHONE_HREF = "tel:+18325550199";
+import { ArrowRight, MessageCircle, CheckCircle2 } from "lucide-react";
 
 const qualifications = [
   "You own your home in Texas",
@@ -92,17 +89,6 @@ export default function FinalCTA() {
               >
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Chat With Us Now
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="border-white/15 text-white bg-white/5 hover:bg-white/10 hover:text-white font-heading font-medium text-base rounded-xl px-8 h-14"
-              >
-                <a href={PHONE_HREF}>
-                  <Phone className="w-5 h-5 mr-2" />
-                  {PHONE_NUMBER}
-                </a>
               </Button>
             </motion.div>
           </div>

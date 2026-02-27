@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Menu, X } from "lucide-react";
+import { MessageCircle, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const PHONE_NUMBER = "(832) 555-0199";
-const PHONE_HREF = "tel:+18325550199";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,6 +19,8 @@ export default function Header() {
     { label: "Get Started", href: "#get-started" },
   ];
 
+  const openChat = () => window.dispatchEvent(new CustomEvent("open-chat"));
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -32,7 +31,7 @@ export default function Header() {
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex h-18 items-center justify-between">
-          {/* Nav links (left-aligned, replacing logo) */}
+          {/* Nav links (left-aligned) */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <a
@@ -51,22 +50,12 @@ export default function Header() {
 
           {/* CTA (right-aligned) */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href={PHONE_HREF}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg font-heading text-sm font-medium transition-all duration-300 ${
-                scrolled
-                  ? "text-navy/70 hover:text-navy"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              <Phone className="w-4 h-4" />
-              {PHONE_NUMBER}
-            </a>
             <Button
-              asChild
+              onClick={openChat}
               className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold rounded-lg px-5 shadow-none"
             >
-              <a href="#get-started">Check Eligibility</a>
+              <MessageCircle className="w-4 h-4 mr-2" />
+              Chat Now
             </Button>
           </div>
 
@@ -104,19 +93,13 @@ export default function Header() {
                   {link.label}
                 </a>
               ))}
-              <div className="pt-3 border-t border-border flex flex-col gap-2">
-                <a
-                  href={PHONE_HREF}
-                  className="flex items-center gap-2 px-4 py-3 rounded-lg font-heading text-sm font-medium text-navy/70"
-                >
-                  <Phone className="w-4 h-4" />
-                  {PHONE_NUMBER}
-                </a>
+              <div className="pt-3 border-t border-border">
                 <Button
-                  asChild
+                  onClick={() => { setMobileOpen(false); openChat(); }}
                   className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold w-full"
                 >
-                  <a href="#get-started">Check Eligibility</a>
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Chat Now
                 </Button>
               </div>
             </div>

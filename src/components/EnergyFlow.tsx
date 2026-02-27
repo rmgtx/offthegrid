@@ -1,10 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Phone } from "lucide-react";
-
-const PHONE_NUMBER = "(832) 555-0199";
-const PHONE_HREF = "tel:+18325550199";
+import { MessageCircle, ArrowRight } from "lucide-react";
 
 function FlowArrow({ delay }: { delay: number }) {
   return (
@@ -250,25 +247,13 @@ export default function EnergyFlow() {
         >
           <div className="flex flex-wrap justify-center gap-4">
             <Button
-              asChild
               size="lg"
               className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold text-base rounded-xl px-8 h-13"
+              onClick={() => window.dispatchEvent(new CustomEvent("open-chat"))}
             >
-              <a href="#get-started">
-                See If You Qualify
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </a>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="font-heading font-medium text-base rounded-xl px-8 h-13 border-navy/15 text-navy"
-            >
-              <a href={PHONE_HREF}>
-                <Phone className="w-4 h-4 mr-2" />
-                {PHONE_NUMBER}
-              </a>
+              <MessageCircle className="w-5 h-5 mr-2" />
+              Chat Now
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </motion.div>

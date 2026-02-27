@@ -1,7 +1,4 @@
-import { Phone, Mail } from "lucide-react";
-
-const PHONE_NUMBER = "(832) 555-0199";
-const PHONE_HREF = "tel:+18325550199";
+import { Mail } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -28,7 +25,7 @@ export default function Footer() {
               {[
                 { label: "How It Works", href: "#how-it-works" },
                 { label: "The Program", href: "#program" },
-                { label: "Check Eligibility", href: "#get-started" },
+                { label: "Get Started", href: "#get-started" },
               ].map((link) => (
                 <li key={link.href}>
                   <a
@@ -82,15 +79,6 @@ export default function Footer() {
               Contact
             </h4>
             <ul className="space-y-3">
-              <li>
-                <a
-                  href={PHONE_HREF}
-                  className="flex items-center gap-2 font-body text-sm text-white/40 hover:text-white/70 transition-colors"
-                >
-                  <Phone className="w-4 h-4" />
-                  {PHONE_NUMBER}
-                </a>
-              </li>
               <li>
                 <a
                   href="mailto:info@texashomeenergy.com"

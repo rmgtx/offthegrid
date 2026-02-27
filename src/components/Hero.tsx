@@ -15,27 +15,29 @@ import {
 const PHONE_NUMBER = "(832) 555-0199";
 const PHONE_HREF = "tel:+18325550199";
 
+const base = import.meta.env.BASE_URL;
+
 const slides = [
   {
     headline: "Never Lose Power Again",
     subline:
       "Up to 12 whole-home backup batteries installed at no cost to you. Keep your family safe when the grid fails.",
     accent: "Government-Backed Program",
-    image: "/hero/slide-1-lit-home.jpg",
+    image: `${base}hero/slide-1-lit-home.png`,
   },
   {
     headline: "Texas Homes Deserve Better",
     subline:
       "After Winter Storm Uri left 4.5 million homes without power, Texans said enough. This program makes your home grid-independent.",
     accent: "No Out-of-Pocket Cost",
-    image: "/hero/slide-2-ice-storm.jpg",
+    image: `${base}hero/slide-2-ice-storm.png`,
   },
   {
     headline: "Solar That Actually Saves",
     subline:
       "Your monthly solar payment is less than your current electric bill. Day one savings with whole-home protection built in.",
     accent: "Lower Than Your Current Bill",
-    image: "/hero/slide-3-solar-home.jpg",
+    image: `${base}hero/slide-3-solar-home.png`,
   },
 ];
 
@@ -77,20 +79,28 @@ export default function Hero() {
       {/* Background — gradient base + crossfading images */}
       <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy-light to-navy-mid" />
 
-      {/* Hero images (crossfade) */}
+      {/* Hero images (crossfade) — scaled up 5% and shifted to crop out bottom-left watermark */}
       {slides.map((slide, i) => (
-        <div
+        <img
           key={slide.image}
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
-          style={{
-            backgroundImage: `url(${slide.image})`,
-            opacity: i === current ? 1 : 0,
-          }}
+          src={slide.image}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out scale-105 origin-top-right"
+          style={{ opacity: i === current ? 1 : 0 }}
         />
       ))}
 
       {/* Dark overlay for text legibility */}
-      <div className="absolute inset-0 bg-navy/60" />
+      <div className="absolute inset-0 bg-navy/55" />
+
+      {/* Bottom-left corner mask to hide watermark remnants */}
+      <div
+        className="absolute bottom-0 left-0 w-48 h-48 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at bottom left, rgba(11,20,38,0.95) 0%, rgba(11,20,38,0.6) 40%, transparent 70%)",
+        }}
+      />
 
       {/* Decorative grid */}
       <div

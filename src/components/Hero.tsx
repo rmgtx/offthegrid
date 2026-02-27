@@ -6,7 +6,7 @@ import {
   MessageCircle,
   ArrowRight,
   Battery,
-  ShieldCheck,
+  DollarSign,
   Zap,
 } from "lucide-react";
 
@@ -43,7 +43,7 @@ const features = [
     desc: "Whole-home backup",
   },
   {
-    icon: ShieldCheck,
+    icon: DollarSign,
     label: "$0 Cost",
     desc: "No out-of-pocket",
   },

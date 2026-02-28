@@ -88,6 +88,7 @@ export default function FinalCTA() {
                 }}
               >
                 Quick Eligibility Check
+                <ArrowRight className="w-4 h-4 ml-2 animate-arrow-nudge" />
               </Button>
             </motion.div>
           </div>

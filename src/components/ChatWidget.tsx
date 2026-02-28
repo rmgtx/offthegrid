@@ -130,7 +130,7 @@ export default function ChatWidget() {
               className="bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-br-md shadow-[0_8px_30px_rgba(0,0,0,0.3)] px-4 py-3 max-w-[220px]"
             >
               <p className="font-body text-sm text-white/90 leading-snug">
-                Want to see if your home qualifies for free batteries?
+                Want to see if your home qualifies for free solar panels & batteries?
               </p>
             </motion.div>
 

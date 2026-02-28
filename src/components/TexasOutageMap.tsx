@@ -11,7 +11,6 @@ import {
   countyStyle,
   getCountyPhase,
   MONTHS,
-  MONTH_FULL,
 } from "@/lib/outage-simulation";
 
 export default function TexasOutageMap() {
@@ -57,7 +56,33 @@ export default function TexasOutageMap() {
   const estAffected = Math.round(offlineCount * 127_000);
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center gap-4">
+    <div ref={containerRef} className="flex flex-col items-center gap-0.5">
+      {/* Event label — above the map, in normal flow */}
+      <div className="text-center min-h-[52px]">
+        {activeEvent ? (
+          <>
+            <div className="flex items-center justify-center gap-2.5 mb-1.5">
+              <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-400 animate-pulse" />
+              <span className="font-heading text-lg sm:text-xl font-bold text-white tracking-wide">
+                {EV_ICONS[activeEvent.type]} {activeEvent.name}
+              </span>
+            </div>
+            {estAffected > 0 && (
+              <span className="font-body text-sm text-white/50">
+                ~{(estAffected / 1_000_000).toFixed(1)}M affected
+              </span>
+            )}
+          </>
+        ) : (
+          <div className="flex items-center justify-center gap-2.5">
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald" />
+            <span className="font-heading text-lg sm:text-xl font-bold text-white/50 tracking-wide">
+              Grid Stable
+            </span>
+          </div>
+        )}
+      </div>
+
       {/* Map container */}
       <div className="relative w-full" style={{ maxWidth: 520 }}>
         {/* Ambient glow behind map */}
@@ -67,32 +92,6 @@ export default function TexasOutageMap() {
             background: "radial-gradient(ellipse at center, rgba(20,60,150,0.15) 0%, transparent 70%)",
           }}
         />
-
-        {/* Event label overlay */}
-        <div className="absolute top-2 left-3 right-3 z-10 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {activeEvent ? (
-              <>
-                <span className="inline-block w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-                <span className="font-heading text-xs font-semibold text-white/80 tracking-wide">
-                  {EV_ICONS[activeEvent.type]} {activeEvent.name}
-                </span>
-              </>
-            ) : (
-              <>
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald" />
-                <span className="font-heading text-xs font-semibold text-white/50 tracking-wide">
-                  Grid Stable
-                </span>
-              </>
-            )}
-          </div>
-          {activeEvent && estAffected > 0 && (
-            <span className="font-body text-[11px] text-white/40">
-              ~{(estAffected / 1_000_000).toFixed(1)}M affected
-            </span>
-          )}
-        </div>
 
         {/* SVG Map */}
         <svg
@@ -188,10 +187,6 @@ export default function TexasOutageMap() {
         ))}
       </div>
 
-      {/* Current month/season label */}
-      <p className="font-body text-xs text-white/30 text-center">
-        {MONTH_FULL[currentMonth]} — Annual weather simulation
-      </p>
     </div>
   );
 }

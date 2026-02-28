@@ -40,9 +40,9 @@ export default function FinalCTA() {
               <p className="font-heading text-sm font-semibold tracking-widest uppercase text-amber mb-4">
                 Get Started Today
               </p>
-              <h2 className="font-display text-4xl sm:text-5xl text-white leading-[1.1] mb-6">
+              <h2 className="font-display font-extrabold text-4xl sm:text-5xl text-white leading-[1.1] mb-6">
                 Your home energy analyst is{" "}
-                <span className="text-amber italic">ready to help.</span>
+                <span className="accent-glow italic">ready to help.</span>
               </h2>
               <p className="font-body text-lg text-white/50 leading-relaxed mb-8">
                 A quick conversation with one of our energy analysts is all it
@@ -108,7 +108,7 @@ export default function FinalCTA() {
                   </div>
                   <div>
                     <div className="font-heading font-semibold text-white text-sm">
-                      Energy Assistant
+                      Energy Analyst
                     </div>
                     <div className="font-body text-white/40 text-xs">
                       Online now

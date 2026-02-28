@@ -44,10 +44,10 @@
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
 
-    /* Custom brand colors */
-    --color-navy: #0B1426;
-    --color-navy-light: #162036;
-    --color-navy-mid: #1E293B;
+    /* Custom brand colors — darker for dark-mode feel */
+    --color-navy: #060B14;
+    --color-navy-light: #0C1420;
+    --color-navy-mid: #111A28;
     --color-amber: #F59E0B;
     --color-amber-dark: #D97706;
     --color-amber-light: #FEF3C7;
@@ -55,43 +55,43 @@
     --color-emerald: #10B981;
 
     /* Custom fonts */
-    --font-display: "Instrument Serif", Georgia, serif;
+    --font-display: "Urbanist", system-ui, sans-serif;
     --font-heading: "Outfit", system-ui, sans-serif;
     --font-body: "DM Sans", system-ui, sans-serif;
 }
 
 :root {
     --radius: 0.625rem;
-    --background: #FAFBFC;
-    --foreground: #0B1426;
-    --card: #FFFFFF;
-    --card-foreground: #0B1426;
-    --popover: #FFFFFF;
-    --popover-foreground: #0B1426;
-    --primary: #0B1426;
-    --primary-foreground: #FAFBFC;
-    --secondary: #F1F5F9;
-    --secondary-foreground: #0B1426;
-    --muted: #F1F5F9;
-    --muted-foreground: #64748B;
+    --background: #0A0A0B;
+    --foreground: #F5F5F5;
+    --card: #141414;
+    --card-foreground: #F5F5F5;
+    --popover: #1A1A1A;
+    --popover-foreground: #F5F5F5;
+    --primary: #F5F5F5;
+    --primary-foreground: #0A0A0B;
+    --secondary: #1A1A1A;
+    --secondary-foreground: #E0E0E0;
+    --muted: #1E1E1E;
+    --muted-foreground: #A0A0A0;
     --accent: #F59E0B;
-    --accent-foreground: #0B1426;
+    --accent-foreground: #0A0A0B;
     --destructive: #EF4444;
-    --border: #E2E8F0;
-    --input: #E2E8F0;
+    --border: #262626;
+    --input: #262626;
     --ring: #F59E0B;
     --chart-1: #F59E0B;
     --chart-2: #38BDF8;
     --chart-3: #10B981;
     --chart-4: #8B5CF6;
     --chart-5: #EC4899;
-    --sidebar: #FAFBFC;
-    --sidebar-foreground: #0B1426;
-    --sidebar-primary: #0B1426;
-    --sidebar-primary-foreground: #FAFBFC;
-    --sidebar-accent: #F1F5F9;
-    --sidebar-accent-foreground: #0B1426;
-    --sidebar-border: #E2E8F0;
+    --sidebar: #0A0A0B;
+    --sidebar-foreground: #F5F5F5;
+    --sidebar-primary: #F5F5F5;
+    --sidebar-primary-foreground: #0A0A0B;
+    --sidebar-accent: #1A1A1A;
+    --sidebar-accent-foreground: #E0E0E0;
+    --sidebar-border: #262626;
     --sidebar-ring: #F59E0B;
 }
 
@@ -183,4 +183,20 @@
 
 .animate-arrow-nudge {
     animation: arrow-nudge 3s ease-in-out infinite;
+}
+
+/* Accent headline text — gradient + glow for catchy phrases */
+.accent-glow {
+    background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 50%, #F59E0B 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.35));
+    animation: accent-shimmer 4s ease-in-out infinite;
+}
+
+@keyframes accent-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }

@@ -24,7 +24,7 @@ function StatCard({ icon: Icon, value, label, detail, delay, color }: StatCardPr
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ delay, duration: 0.6, ease: "easeOut" }}
     >
-      <Card className="group border-0 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-500 bg-white rounded-2xl overflow-hidden">
+      <Card className="group border border-white/[0.06] shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all duration-500 bg-[#141414] rounded-2xl overflow-hidden">
         <CardContent className="p-6 sm:p-7">
           <div className="flex items-start gap-4">
             <div
@@ -34,10 +34,10 @@ function StatCard({ icon: Icon, value, label, detail, delay, color }: StatCardPr
               <Icon className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-heading font-bold text-3xl sm:text-4xl text-navy tracking-tight">
+              <div className="font-heading font-bold text-3xl sm:text-4xl text-white tracking-tight">
                 {value}
               </div>
-              <div className="font-heading font-semibold text-sm text-navy/80 mt-1">
+              <div className="font-heading font-semibold text-sm text-white/80 mt-1">
                 {label}
               </div>
               <div className="font-body text-sm text-muted-foreground mt-2 leading-relaxed">
@@ -71,7 +71,7 @@ const stats = [
     value: "246",
     label: "Lives Lost",
     detail: "Official estimates put the death toll at 246 Texans, many from hypothermia in their own homes.",
-    color: "#0B1426",
+    color: "#64748B",
   },
   {
     icon: DollarSign,
@@ -98,9 +98,9 @@ export default function OutageStats() {
           <p className="font-heading text-sm font-semibold tracking-widest uppercase text-amber mb-4">
             The Texas Power Crisis
           </p>
-          <h2 className="font-display text-4xl sm:text-5xl text-navy leading-[1.1] mb-5">
+          <h2 className="font-display font-extrabold text-4xl sm:text-5xl text-white leading-[1.1] mb-5">
             This isn't a hypothetical.{" "}
-            <span className="text-amber italic">It already happened.</span>
+            <span className="accent-glow italic">It already happened.</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground leading-relaxed">
             Texas has experienced catastrophic grid failures — from Winter Storm
@@ -131,9 +131,9 @@ export default function OutageStats() {
               <p className="font-heading text-sm font-semibold tracking-widest uppercase text-amber mb-4">
                 Every Season Brings a Threat
               </p>
-              <h3 className="font-display text-3xl sm:text-4xl text-white leading-tight mb-4">
+              <h3 className="font-display font-bold text-3xl sm:text-4xl text-white leading-tight mb-4">
                 Your grid is{" "}
-                <span className="text-amber italic">always vulnerable.</span>
+                <span className="accent-glow italic">always vulnerable.</span>
               </h3>
               <p className="font-body text-white/60 leading-relaxed mb-6">
                 From winter freezes to summer heat domes and hurricane season,
@@ -141,16 +141,6 @@ export default function OutageStats() {
                 (CenterPoint) and Dallas (Oncor) are primary qualifying areas
                 for the backup battery program.
               </p>
-              <div className="flex flex-wrap gap-3">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald/10 text-emerald font-heading text-sm font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald" />
-                  CenterPoint — Houston
-                </span>
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-sky/10 text-sky font-heading text-sm font-medium">
-                  <span className="w-2 h-2 rounded-full bg-sky" />
-                  Oncor — Dallas
-                </span>
-              </div>
             </div>
 
             {/* Animated Texas outage map */}

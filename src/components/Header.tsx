@@ -25,7 +25,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-white/90 backdrop-blur-xl shadow-[0_1px_0_0_rgba(0,0,0,0.06)]"
+          ? "bg-[#0A0A0B]/90 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.04)]"
           : "bg-transparent"
       }`}
     >
@@ -39,7 +39,7 @@ export default function Header() {
                 href={link.href}
                 className={`px-4 py-2 rounded-lg font-heading text-sm font-medium transition-all duration-300 ${
                   scrolled
-                    ? "text-navy/70 hover:text-navy hover:bg-navy/5"
+                    ? "text-white/70 hover:text-white hover:bg-white/5"
                     : "text-white/70 hover:text-white hover:bg-white/10"
                 }`}
               >
@@ -63,7 +63,7 @@ export default function Header() {
             onClick={() => setMobileOpen(!mobileOpen)}
             className={`md:hidden p-2 rounded-lg transition-colors ${
               scrolled
-                ? "text-navy hover:bg-navy/5"
+                ? "text-white hover:bg-white/5"
                 : "text-white hover:bg-white/10"
             }`}
           >
@@ -79,7 +79,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/95 backdrop-blur-xl border-t border-border overflow-hidden"
+            className="md:hidden bg-[#141414]/95 backdrop-blur-xl border-t border-border overflow-hidden"
           >
             <div className="px-5 py-4 space-y-1">
               {navLinks.map((link) => (
@@ -87,7 +87,7 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3 rounded-lg font-heading text-sm font-medium text-navy/70 hover:text-navy hover:bg-navy/5"
+                  className="block px-4 py-3 rounded-lg font-heading text-sm font-medium text-white/70 hover:text-white hover:bg-white/5"
                 >
                   {link.label}
                 </a>

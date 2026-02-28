@@ -47,10 +47,6 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {[
                 {
-                  label: "Energy Community Map",
-                  href: "https://energycommunities.gov/energy-community-tax-credit-bonus/",
-                },
-                {
                   label: "TX Solar Tax Exemption",
                   href: "https://comptroller.texas.gov/taxes/property-tax/exemptions/",
                 },

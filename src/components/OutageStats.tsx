@@ -1,19 +1,16 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { CloudLightning, Clock, Home, DollarSign } from "lucide-react";
 import TexasOutageMap from "@/components/TexasOutageMap";
 
 interface StatCardProps {
-  icon: React.ElementType;
   value: string;
   label: string;
   detail: string;
   delay: number;
-  color: string;
 }
 
-function StatCard({ icon: Icon, value, label, detail, delay, color }: StatCardProps) {
+function StatCard({ value, label, detail, delay }: StatCardProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -26,16 +23,8 @@ function StatCard({ icon: Icon, value, label, detail, delay, color }: StatCardPr
     >
       <Card className="group h-full border border-white/[0.06] shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all duration-500 bg-[#141414] rounded-2xl overflow-hidden">
         <CardContent className="p-6 sm:p-7 flex flex-col h-full">
-          <div className="flex items-center gap-3 mb-1">
-            <div
-              className="flex items-center justify-center w-9 h-9 rounded-lg shrink-0"
-              style={{ backgroundColor: `${color}15`, color }}
-            >
-              <Icon className="w-4 h-4" />
-            </div>
-            <div className="font-heading font-bold text-3xl sm:text-4xl text-white tracking-tight">
-              {value}
-            </div>
+          <div className="font-heading font-bold text-3xl sm:text-4xl text-white tracking-tight mb-1">
+            {value}
           </div>
           <div className="font-heading font-semibold text-sm text-white/80 mt-1">
             {label}
@@ -51,32 +40,24 @@ function StatCard({ icon: Icon, value, label, detail, delay, color }: StatCardPr
 
 const stats = [
   {
-    icon: CloudLightning,
     value: "4.5M",
     label: "Homes Lost Power",
     detail: "During Winter Storm Uri in February 2021, millions of Texas families were left in freezing darkness for days.",
-    color: "#EF4444",
   },
   {
-    icon: Clock,
     value: "4+ Days",
     label: "Average Outage Duration",
     detail: "Some neighborhoods went without electricity for over a week — no heat, no refrigeration, no communication.",
-    color: "#F59E0B",
   },
   {
-    icon: Home,
     value: "246",
     label: "Lives Lost",
     detail: "Official estimates put the death toll at 246 Texans, many from hypothermia in their own homes.",
-    color: "#64748B",
   },
   {
-    icon: DollarSign,
     value: "$195B",
     label: "Economic Damage",
     detail: "The costliest natural disaster in Texas history. Insurance claims and repairs devastated communities.",
-    color: "#10B981",
   },
 ];
 

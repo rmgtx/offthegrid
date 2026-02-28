@@ -24,26 +24,24 @@ function StatCard({ icon: Icon, value, label, detail, delay, color }: StatCardPr
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ delay, duration: 0.6, ease: "easeOut" }}
     >
-      <Card className="group border border-white/[0.06] shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all duration-500 bg-[#141414] rounded-2xl overflow-hidden">
-        <CardContent className="p-6 sm:p-7">
-          <div className="flex items-start gap-4">
+      <Card className="group h-full border border-white/[0.06] shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all duration-500 bg-[#141414] rounded-2xl overflow-hidden">
+        <CardContent className="p-6 sm:p-7 flex flex-col h-full">
+          <div className="flex items-center gap-3 mb-1">
             <div
-              className="flex items-center justify-center w-12 h-12 rounded-xl shrink-0"
+              className="flex items-center justify-center w-9 h-9 rounded-lg shrink-0"
               style={{ backgroundColor: `${color}15`, color }}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-4 h-4" />
             </div>
-            <div>
-              <div className="font-heading font-bold text-3xl sm:text-4xl text-white tracking-tight">
-                {value}
-              </div>
-              <div className="font-heading font-semibold text-sm text-white/80 mt-1">
-                {label}
-              </div>
-              <div className="font-body text-sm text-muted-foreground mt-2 leading-relaxed">
-                {detail}
-              </div>
+            <div className="font-heading font-bold text-3xl sm:text-4xl text-white tracking-tight">
+              {value}
             </div>
+          </div>
+          <div className="font-heading font-semibold text-sm text-white/80 mt-1">
+            {label}
+          </div>
+          <div className="font-body text-sm text-muted-foreground mt-3 leading-relaxed">
+            {detail}
           </div>
         </CardContent>
       </Card>
@@ -110,7 +108,7 @@ export default function OutageStats() {
         </motion.div>
 
         {/* Stats grid */}
-        <div className="grid sm:grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {stats.map((stat, i) => (
             <StatCard key={stat.label} {...stat} delay={i * 0.12} />
           ))}

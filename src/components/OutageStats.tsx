@@ -65,7 +65,7 @@ export default function OutageStats() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   return (
-    <section id="how-it-works" className="relative py-24 sm:py-32">
+    <section className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8" ref={sectionRef}>
         {/* Section header */}
         <motion.div

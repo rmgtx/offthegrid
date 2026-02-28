@@ -68,7 +68,7 @@ export default function EnergyFlow() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="relative py-24 sm:py-32 overflow-hidden">
+    <section id="how-it-works" className="relative py-24 sm:py-32 overflow-hidden scroll-mt-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-8" ref={ref}>
         {/* Header */}
         <motion.div

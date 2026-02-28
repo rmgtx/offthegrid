@@ -14,8 +14,8 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { label: "How It Works", href: "#how-it-works" },
     { label: "The Program", href: "#program" },
+    { label: "How It Works", href: "#how-it-works" },
     { label: "Get Started", href: "#get-started" },
   ];
 

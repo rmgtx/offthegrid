@@ -17,7 +17,7 @@ export default function FinalCTA() {
   return (
     <section
       id="get-started"
-      className="relative py-24 sm:py-32 overflow-hidden"
+      className="relative py-24 sm:py-32 overflow-hidden scroll-mt-20"
       ref={ref}
     >
       {/* Dark background */}

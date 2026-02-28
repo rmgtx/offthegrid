@@ -111,11 +111,11 @@ export default function FinalCTA() {
                     <div className="font-heading font-semibold text-white text-sm">
                       Energy Analyst
                     </div>
-                    <div className="font-body text-white/40 text-xs">
+                    <div className="flex items-center gap-1.5 font-body text-xs text-white/40">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald" />
                       Online now
                     </div>
                   </div>
-                  <div className="ml-auto w-2.5 h-2.5 rounded-full bg-emerald animate-pulse" />
                 </div>
 
                 {/* Mock chat messages */}

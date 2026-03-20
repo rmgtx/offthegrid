@@ -22,10 +22,10 @@ const slides = [
     image: `${base}hero/slide-2-ice-storm.png`,
   },
   {
-    headline: "Solar That Actually Saves",
+    headline: "Power Through Any Storm",
     subline:
-      "Your monthly solar payment is less than your current electric bill. Day one savings with whole-home protection built in.",
-    accent: "Lower Than Your Current Bill",
+      "Up to 12 whole-home batteries keep your lights on, your food cold, and your family safe — no matter what hits the grid.",
+    accent: "Whole-Home Battery Protection",
     image: `${base}hero/slide-3-solar-home.png`,
   },
 ];

@@ -11,7 +11,7 @@ interface Message {
 const INITIAL_MESSAGES: Message[] = [
   {
     role: "assistant",
-    text: "Hey there! I can help you find out if your home qualifies for up to 12 free backup batteries and solar panels.",
+    text: "Hey there! I can help you find out if your home qualifies for up to 12 whole-home backup batteries at no cost.",
   },
   {
     role: "assistant",
@@ -130,7 +130,7 @@ export default function ChatWidget() {
               className="bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-br-md shadow-[0_8px_30px_rgba(0,0,0,0.3)] px-4 py-3 max-w-[220px]"
             >
               <p className="font-body text-sm text-white/90 leading-snug">
-                Want to see if your home qualifies for free solar panels & batteries?
+                Want to see if your home qualifies for whole-home battery backup?
               </p>
             </motion.div>
 

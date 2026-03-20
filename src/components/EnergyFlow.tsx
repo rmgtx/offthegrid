@@ -85,8 +85,8 @@ export default function EnergyFlow() {
             <span className="accent-glow italic">Powerful protection.</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground leading-relaxed">
-            Here's how your home becomes its own power plant — generating,
-            storing, and using clean energy while staying connected to the grid.
+            Here's how your home stays powered when the grid goes down —
+            storing energy and keeping your family safe through any outage.
           </p>
         </motion.div>
 
@@ -95,60 +95,24 @@ export default function EnergyFlow() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-4 mb-20">
             <FlowStep
               delay={0.1}
-              label="Sunlight"
-              sublabel="Free energy source"
+              label="Grid Power"
+              sublabel="Your energy source"
               icon={
                 <svg viewBox="0 0 64 64" className="w-14 h-14">
-                  {/* Sun body */}
-                  <circle cx="32" cy="32" r="14" fill="#F59E0B" />
-                  {/* Rays */}
-                  {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-                    <line
-                      key={angle}
-                      x1={32 + 18 * Math.cos((angle * Math.PI) / 180)}
-                      y1={32 + 18 * Math.sin((angle * Math.PI) / 180)}
-                      x2={32 + 26 * Math.cos((angle * Math.PI) / 180)}
-                      y2={32 + 26 * Math.sin((angle * Math.PI) / 180)}
-                      stroke="#F59E0B"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                    />
-                  ))}
+                  {/* Power plug / outlet */}
+                  <rect x="18" y="14" width="28" height="36" rx="4" fill="#1E293B" stroke="#38BDF8" strokeWidth="1.5" strokeOpacity="0.4" />
+                  {/* Outlet holes */}
+                  <rect x="25" y="24" width="4" height="8" rx="2" fill="#38BDF8" opacity="0.6" />
+                  <rect x="35" y="24" width="4" height="8" rx="2" fill="#38BDF8" opacity="0.6" />
+                  {/* Ground */}
+                  <rect x="30" y="36" width="4" height="6" rx="2" fill="#38BDF8" opacity="0.4" />
+                  {/* Lightning bolt accent */}
+                  <path d="M30 10 L34 10 L32 16 L36 16 L28 26 L30 20 L26 20 Z" fill="#F59E0B" opacity="0.8" />
                 </svg>
               }
             />
 
             <FlowArrow delay={0.25} />
-
-            <FlowStep
-              delay={0.3}
-              label="Solar Panels"
-              sublabel="On your roof"
-              icon={
-                <svg viewBox="0 0 64 64" className="w-14 h-14">
-                  <rect
-                    x="10"
-                    y="16"
-                    width="44"
-                    height="32"
-                    rx="3"
-                    fill="#1E293B"
-                    stroke="#38BDF8"
-                    strokeWidth="1"
-                    strokeOpacity="0.3"
-                  />
-                  {/* Grid lines */}
-                  <line x1="10" y1="27" x2="54" y2="27" stroke="#38BDF8" strokeWidth="0.8" opacity="0.5" />
-                  <line x1="10" y1="37" x2="54" y2="37" stroke="#38BDF8" strokeWidth="0.8" opacity="0.5" />
-                  <line x1="25" y1="16" x2="25" y2="48" stroke="#38BDF8" strokeWidth="0.8" opacity="0.5" />
-                  <line x1="39" y1="16" x2="39" y2="48" stroke="#38BDF8" strokeWidth="0.8" opacity="0.5" />
-                  {/* Reflection */}
-                  <rect x="12" y="18" width="10" height="7" rx="1" fill="#38BDF8" opacity="0.15" />
-                </svg>
-              }
-            />
-
-            <FlowArrow delay={0.45} />
 
             <FlowStep
               delay={0.5}
@@ -205,18 +169,18 @@ export default function EnergyFlow() {
           {[
             {
               num: "01",
-              title: "Panels capture sunlight",
-              desc: "Premium solar panels on your roof convert Texas sunshine into clean electricity for your home.",
+              title: "Energy flows into your home",
+              desc: "Your home draws power from the grid like normal — but now it has somewhere to store it.",
             },
             {
               num: "02",
-              title: "Batteries store excess",
-              desc: "Up to 12 batteries store energy for when you need it most — outages, peak hours, or nighttime.",
+              title: "Batteries store backup power",
+              desc: "Up to 12 batteries store energy for when you need it most — outages, peak demand, or emergencies.",
             },
             {
               num: "03",
-              title: "Home stays powered",
-              desc: "Your home runs on stored solar energy. If the grid goes down, you don't even notice.",
+              title: "Home stays powered through outages",
+              desc: "When the grid goes down, your batteries kick in automatically. Your family won't even notice.",
             },
           ].map((step, i) => (
             <motion.div

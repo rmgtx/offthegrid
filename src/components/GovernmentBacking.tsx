@@ -7,7 +7,7 @@ const pillars = [
   {
     icon: CircleDollarSign,
     title: "Federal Tax Credit Program",
-    body: "The Investment Tax Credit (ITC) provides significant incentives for residential solar and battery storage systems, funded by federal tax credit investors.",
+    body: "The Investment Tax Credit (ITC) provides significant incentives for residential battery storage systems, funded by federal tax credit investors.",
     color: "#10B981",
   },
   {
@@ -19,7 +19,7 @@ const pillars = [
   {
     icon: TrendingUp,
     title: "Texas Property Tax Exemption",
-    body: "Texas law exempts the added home value from solar energy systems from property taxes — your home value goes up, your taxes don't.",
+    body: "Texas law exempts the added home value from energy storage systems from property taxes — your home value goes up, your taxes don't.",
     color: "#3B82F6",
   },
   {

@@ -11,8 +11,8 @@ export default function Footer() {
               Texas Home Energy Program
             </h4>
             <p className="font-body text-sm text-white/40 leading-relaxed max-w-xs">
-              Protecting Texas homes with solar energy and whole-home battery
-              backup through the federal Virtual Power Plant program.
+              Protecting Texas homes with whole-home battery backup through
+              the federal Virtual Power Plant program.
             </p>
           </div>
 
@@ -47,7 +47,7 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {[
                 {
-                  label: "TX Solar Tax Exemption",
+                  label: "TX Energy Tax Exemption",
                   href: "https://comptroller.texas.gov/taxes/property-tax/exemptions/",
                 },
                 {

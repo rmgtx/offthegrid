@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,58 +11,30 @@ interface Message {
 const INITIAL_MESSAGES: Message[] = [
   {
     role: "assistant",
-    text: "Hey there! I can help you find out if your home qualifies for up to 12 whole-home backup batteries at no cost.",
+    text: "I can help you find out if your home qualifies.",
   },
   {
     role: "assistant",
-    text: "It only takes a couple minutes. Want to see if you're eligible?",
+    text: "It only takes a couple minutes — let's start with a few quick questions. Are you a homeowner?",
   },
+];
+
+// Streamlined chat flow questions
+const FLOW_QUESTIONS: string[] = [
+  "Great! Do you live in the Houston area — for example, in the CenterPoint service area?",
+  "Got it! Can you tell me about how much you're spending each month on your utilities?",
+  "Thanks for that! Based on what you've shared, it looks like you may qualify. I'd love to connect you with one of our energy analysts who can review your home's specifics and walk you through everything. Would you like to schedule a quick call?",
 ];
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
   const [minimized, setMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
-  const [size, setSize] = useState({ w: 360, h: 580 });
+  const [flowStep, setFlowStep] = useState(0);
   const messagesEnd = useRef<HTMLDivElement>(null);
-  const resizing = useRef(false);
-  const resizeStart = useRef({ x: 0, y: 0, w: 0, h: 0 });
-
-  // Resize drag handlers
-  useEffect(() => {
-    const onMove = (e: MouseEvent | TouchEvent) => {
-      if (!resizing.current) return;
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-      const dx = resizeStart.current.x - clientX;
-      const dy = resizeStart.current.y - clientY;
-      setSize({
-        w: Math.max(320, Math.min(window.innerWidth - 48, resizeStart.current.w + dx)),
-        h: Math.max(400, Math.min(window.innerHeight - 48, resizeStart.current.h + dy)),
-      });
-    };
-    const onUp = () => { resizing.current = false; };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
-    window.addEventListener("touchmove", onMove);
-    window.addEventListener("touchend", onUp);
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
-      window.removeEventListener("touchmove", onMove);
-      window.removeEventListener("touchend", onUp);
-    };
-  }, []);
-
-  const startResize = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault();
-    resizing.current = true;
-    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-    resizeStart.current = { x: clientX, y: clientY, w: size.w, h: size.h };
-  };
 
   // Show chat bubble after delay
   useEffect(() => {
@@ -78,10 +50,12 @@ export default function ChatWidget() {
     }
   }, [showBubble]);
 
-  // Listen for custom open event from CTA button
+  // Listen for custom open event from CTA buttons — expand to 1/3 page
   useEffect(() => {
     const handler = () => {
       setOpen(true);
+      setExpanded(true);
+      setMinimized(false);
     };
     window.addEventListener("open-chat", handler);
     return () => window.removeEventListener("open-chat", handler);
@@ -92,23 +66,64 @@ export default function ChatWidget() {
     messagesEnd.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = useCallback(() => {
     if (!input.trim()) return;
     const userMsg = input.trim();
     setInput("");
     setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
 
-    // Simulated assistant response
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          text: "Thanks for that! To get you the most accurate information, I'd love to connect you with one of our energy analysts. They can review your home's specifics and walk you through everything — every home is a little different. Would you like to schedule a quick call?",
-        },
-      ]);
-    }, 1200);
+    // Streamlined flow responses
+    const currentStep = flowStep;
+    if (currentStep < FLOW_QUESTIONS.length) {
+      setFlowStep(currentStep + 1);
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", text: FLOW_QUESTIONS[currentStep] },
+        ]);
+      }, 1200);
+    } else {
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            text: "Really appreciate you sharing that. Let me pull up a few options based on what you've told me — one sec.",
+          },
+        ]);
+        setTimeout(() => {
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "assistant",
+              text: "Okay so based on your area and usage, it looks like your home could be a great fit. I'd love to have one of our energy analysts take a closer look and walk you through everything — they can get a lot more specific to your situation. Want me to set that up?",
+            },
+          ]);
+        }, 2000);
+      }, 1200);
+    }
+  }, [input, flowStep]);
+
+  // Close or minimize: collapse back to bubble
+  const handleClose = () => {
+    setOpen(false);
+    setExpanded(false);
+    setMinimized(false);
   };
+
+  const handleMinimize = () => {
+    if (minimized) {
+      setMinimized(false);
+    } else {
+      setMinimized(true);
+      setExpanded(false);
+    }
+  };
+
+  // Compute dimensions
+  const width = expanded ? "33vw" : 360;
+  const minWidth = expanded ? 360 : 320;
+  const height = expanded ? "70vh" : 580;
 
   return (
     <>
@@ -136,7 +151,7 @@ export default function ChatWidget() {
 
             <button
               onClick={() => setOpen(true)}
-              className="w-14 h-14 rounded-full bg-amber hover:bg-amber-dark text-navy shadow-[0_4px_20px_rgba(245,158,11,0.4)] hover:shadow-[0_4px_30px_rgba(245,158,11,0.5)] flex items-center justify-center transition-all"
+              className="w-14 h-14 rounded-full bg-amber hover:bg-amber-dark text-navy shadow-[0_4px_20px_rgba(229,169,61,0.4)] hover:shadow-[0_4px_30px_rgba(229,169,61,0.5)] flex items-center justify-center transition-all"
             >
               <MessageCircle className="w-6 h-6" />
             </button>
@@ -149,33 +164,19 @@ export default function ChatWidget() {
         {open && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              height: undefined,
-            }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-6 right-6 z-50 max-w-[calc(100vw-2rem)] flex flex-col bg-[#141414] border border-white/[0.06] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 flex flex-col bg-[#141414] border border-white/[0.06] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden"
             style={{
-              width: size.w,
-              height: minimized ? "auto" : size.h,
+              width: minimized ? 360 : width,
+              minWidth,
+              maxWidth: "calc(100vw - 2rem)",
+              height: minimized ? "auto" : height,
               maxHeight: minimized ? "auto" : "calc(100svh - 3rem)",
+              transition: "width 0.3s ease, height 0.3s ease",
             }}
           >
-            {/* Resize handle — top-left corner */}
-            <div
-              onMouseDown={startResize}
-              onTouchStart={startResize}
-              className="absolute top-0 left-0 z-20 w-5 h-5 cursor-nw-resize group"
-            >
-              <svg viewBox="0 0 20 20" className="w-full h-full text-white/20 group-hover:text-white/40 transition-colors">
-                <line x1="4" y1="14" x2="14" y2="4" stroke="currentColor" strokeWidth="1.5" />
-                <line x1="4" y1="9" x2="9" y2="4" stroke="currentColor" strokeWidth="1.5" />
-              </svg>
-            </div>
-
             {/* Header */}
             <div className="flex items-center gap-3 px-5 py-4 bg-navy">
               <div className="w-9 h-9 rounded-full bg-amber/15 flex items-center justify-center">
@@ -191,13 +192,13 @@ export default function ChatWidget() {
                 </div>
               </div>
               <button
-                onClick={() => setMinimized(!minimized)}
+                onClick={handleMinimize}
                 className="p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/10 transition-colors"
               >
                 <Minus className="w-4 h-4" />
               </button>
               <button
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
                 className="p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/10 transition-colors"
               >
                 <X className="w-4 h-4" />

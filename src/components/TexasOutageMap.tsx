@@ -155,14 +155,14 @@ export default function TexasOutageMap() {
       </div>
 
       {/* Month timeline dots */}
-      <div className="flex items-center gap-1.5 sm:gap-2 px-2">
+      <div className="flex items-center gap-2 sm:gap-3 px-2">
         {MONTHS.map((m, i) => (
-          <div key={m} className="flex flex-col items-center gap-1">
+          <div key={m} className="flex flex-col items-center gap-1.5">
             <div
               className="rounded-full transition-all duration-400"
               style={{
-                width: i === currentMonth ? 10 : 6,
-                height: i === currentMonth ? 4 : 2,
+                width: i === currentMonth ? 14 : 8,
+                height: i === currentMonth ? 5 : 3,
                 background:
                   i < currentMonth
                     ? "#1e3a6e"
@@ -175,10 +175,10 @@ export default function TexasOutageMap() {
             <span
               className="font-heading transition-colors duration-300"
               style={{
-                fontSize: 8,
+                fontSize: 11,
                 letterSpacing: "0.05em",
-                color: i === currentMonth ? "#F59E0B" : "rgba(255,255,255,0.2)",
-                fontWeight: i === currentMonth ? 700 : 400,
+                color: i === currentMonth ? "#F59E0B" : "rgba(255,255,255,0.3)",
+                fontWeight: i === currentMonth ? 700 : 500,
               }}
             >
               {m}

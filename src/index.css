@@ -48,8 +48,8 @@
     --color-navy: #060B14;
     --color-navy-light: #0C1420;
     --color-navy-mid: #111A28;
-    --color-amber: #F59E0B;
-    --color-amber-dark: #D97706;
+    --color-amber: #E5A93D;
+    --color-amber-dark: #C98E2E;
     --color-amber-light: #FEF3C7;
     --color-sky: #38BDF8;
     --color-emerald: #10B981;
@@ -74,13 +74,13 @@
     --secondary-foreground: #E0E0E0;
     --muted: #1E1E1E;
     --muted-foreground: #A0A0A0;
-    --accent: #F59E0B;
+    --accent: #E5A93D;
     --accent-foreground: #0A0A0B;
     --destructive: #EF4444;
     --border: #262626;
     --input: #262626;
-    --ring: #F59E0B;
-    --chart-1: #F59E0B;
+    --ring: #E5A93D;
+    --chart-1: #E5A93D;
     --chart-2: #38BDF8;
     --chart-3: #10B981;
     --chart-4: #8B5CF6;
@@ -92,7 +92,7 @@
     --sidebar-accent: #1A1A1A;
     --sidebar-accent-foreground: #E0E0E0;
     --sidebar-border: #262626;
-    --sidebar-ring: #F59E0B;
+    --sidebar-ring: #E5A93D;
 }
 
 @layer base {
@@ -150,6 +150,24 @@
     animation: flow-dash 1s linear infinite;
 }
 
+/* Battery charging animation — bars pulse up and down */
+@keyframes battery-bar-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+}
+
+.animate-battery-bar-1 {
+    animation: battery-bar-pulse 2s ease-in-out infinite;
+}
+
+.animate-battery-bar-2 {
+    animation: battery-bar-pulse 2s ease-in-out 0.4s infinite;
+}
+
+.animate-battery-bar-3 {
+    animation: battery-bar-pulse 2s ease-in-out 0.8s infinite;
+}
+
 /* Noise texture overlay */
 .noise-overlay::before {
     content: "";
@@ -187,12 +205,12 @@
 
 /* Accent headline text — gradient + glow for catchy phrases */
 .accent-glow {
-    background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 50%, #F59E0B 100%);
+    background: linear-gradient(135deg, #E5A93D 0%, #F0D078 50%, #E5A93D 100%);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.35));
+    filter: drop-shadow(0 0 18px rgba(229, 169, 61, 0.35));
     animation: accent-shimmer 4s ease-in-out infinite;
 }
 

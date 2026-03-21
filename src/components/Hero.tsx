@@ -10,7 +10,7 @@ const slides = [
   {
     headline: "Never Lose Power Again",
     subline:
-      "Up to 12 whole-home backup batteries installed at no cost to you. Keep your family safe when the grid fails.",
+      "A whole-home battery backup system installed at no cost to you. Keep your family safe when the grid fails.",
     accent: "Government-Backed Program",
     image: `${base}hero/slide-1-lit-home.png`,
   },
@@ -24,9 +24,9 @@ const slides = [
   {
     headline: "Power Through Any Storm",
     subline:
-      "Up to 12 whole-home batteries keep your lights on, your food cold, and your family safe — no matter what hits the grid.",
+      "Enough batteries to match your home's needs — keeping your lights on, your food cold, and your family safe no matter what hits the grid.",
     accent: "Whole-Home Battery Protection",
-    image: `${base}hero/slide-3-solar-home.png`,
+    image: `${base}hero/slide-3-battery-home.png`,
   },
 ];
 
@@ -134,7 +134,7 @@ export default function Hero() {
             <Button
               onClick={openChat}
               size="lg"
-              className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold text-base rounded-xl px-8 h-13 shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_40px_rgba(245,158,11,0.4)] transition-shadow"
+              className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold text-base rounded-xl px-8 h-13 shadow-[0_0_30px_rgba(229,169,61,0.3)] hover:shadow-[0_0_40px_rgba(229,169,61,0.4)] transition-shadow"
             >
               Quick Eligibility Check
               <ArrowRight className="w-4 h-4 ml-2 animate-arrow-nudge" />
@@ -143,7 +143,7 @@ export default function Hero() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white/20 bg-white/5 hover:bg-white/10 text-white font-heading font-semibold text-base rounded-xl px-8 h-13 backdrop-blur-sm"
+              className="border-white/20 bg-white/5 hover:bg-amber/15 hover:border-amber/30 hover:text-amber text-white font-heading font-semibold text-base rounded-xl px-8 h-13 backdrop-blur-sm transition-colors"
             >
               <a href="#program">
                 Learn More

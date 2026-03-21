@@ -1,32 +1,38 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { CircleDollarSign, Sparkles, TrendingUp, Zap } from "lucide-react";
 
 const pillars = [
   {
-    icon: CircleDollarSign,
     title: "Federal Tax Credit Program",
     body: "The Investment Tax Credit (ITC) provides significant incentives for residential battery storage systems, funded by federal tax credit investors.",
-    color: "#10B981",
+    bg: "bg-emerald/10",
+    border: "border-emerald/20",
+    accent: "text-emerald",
+    barColor: "bg-emerald",
   },
   {
-    icon: Sparkles,
     title: "Energy Community Bonus",
     body: "Homes in designated Energy Communities receive enhanced tax credit bonuses, making whole-home battery systems available at no out-of-pocket cost.",
-    color: "#8B5CF6",
+    bg: "bg-purple-500/10",
+    border: "border-purple-500/20",
+    accent: "text-purple-400",
+    barColor: "bg-purple-500",
   },
   {
-    icon: TrendingUp,
     title: "Texas Property Tax Exemption",
     body: "Texas law exempts the added home value from energy storage systems from property taxes — your home value goes up, your taxes don't.",
-    color: "#3B82F6",
+    bg: "bg-sky/10",
+    border: "border-sky/20",
+    accent: "text-sky",
+    barColor: "bg-sky",
   },
   {
-    icon: Zap,
     title: "ERCOT Grid Participation",
     body: "As part of the Virtual Power Plant program, your batteries support the Texas grid during peak demand. ERCOT can borrow stored energy — and you earn credits.",
-    color: "#F59E0B",
+    bg: "bg-amber/10",
+    border: "border-amber/20",
+    accent: "text-amber",
+    barColor: "bg-amber",
   },
 ];
 
@@ -70,7 +76,7 @@ export default function GovernmentBacking() {
           </p>
         </motion.div>
 
-        {/* Pillars */}
+        {/* Pillars — redesigned cards */}
         <div className="grid sm:grid-cols-2 gap-5">
           {pillars.map((pillar, i) => (
             <motion.div
@@ -78,27 +84,20 @@ export default function GovernmentBacking() {
               initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.15 + i * 0.1, duration: 0.6 }}
+              className={`relative rounded-2xl ${pillar.bg} border ${pillar.border} p-8 sm:p-10 overflow-hidden`}
             >
-              <Card className="h-full border border-white/[0.06] shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all duration-500 bg-[#141414] rounded-2xl">
-                <CardContent className="p-7">
-                  <div
-                    className="flex items-center justify-center w-12 h-12 rounded-xl mb-5"
-                    style={{ backgroundColor: `${pillar.color}15`, color: pillar.color }}
-                  >
-                    <pillar.icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-heading font-semibold text-lg text-white mb-3">
-                    {pillar.title}
-                  </h3>
-                  <p className="font-body text-muted-foreground leading-relaxed">
-                    {pillar.body}
-                  </p>
-                </CardContent>
-              </Card>
+              {/* Accent bar at top */}
+              <div className={`absolute top-0 left-0 right-0 h-1 ${pillar.barColor}`} />
+
+              <h3 className={`font-heading font-bold text-xl sm:text-2xl ${pillar.accent} mb-4`}>
+                {pillar.title}
+              </h3>
+              <p className="font-body text-base sm:text-lg text-white/70 leading-relaxed">
+                {pillar.body}
+              </p>
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );

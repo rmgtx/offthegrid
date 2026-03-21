@@ -5,9 +5,8 @@ import { ArrowRight, MessageCircle, CheckCircle2 } from "lucide-react";
 
 const qualifications = [
   "You own your home in Texas",
-  "Credit score of 650 or higher",
-  "Currently have a CenterPoint or Oncor utility account",
-  "Interested in lowering your monthly electric bill",
+  "You have a fair credit score (650 or higher)",
+  "You are spending $80+ a month on your utilities",
 ];
 
 export default function FinalCTA() {
@@ -80,7 +79,7 @@ export default function FinalCTA() {
             >
               <Button
                 size="lg"
-                className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold text-base rounded-xl px-8 h-14 shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_40px_rgba(245,158,11,0.4)] transition-shadow"
+                className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold text-base rounded-xl px-8 h-14 shadow-[0_0_30px_rgba(229,169,61,0.3)] hover:shadow-[0_0_40px_rgba(229,169,61,0.4)] transition-shadow"
                 onClick={() => {
                   /* trigger chat widget open */
                   const event = new CustomEvent("open-chat");
@@ -122,21 +121,19 @@ export default function FinalCTA() {
                 <div className="space-y-3">
                   <div className="bg-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
                     <p className="font-body text-sm text-white/70">
-                      Hi there! I'd love to help you see if your home qualifies for
-                      the battery backup program. Are you a homeowner in the
-                      Houston or Dallas area?
+                      I can help you find out if your home qualifies.
+                      Are you a homeowner?
                     </p>
                   </div>
                   <div className="bg-amber/15 rounded-2xl rounded-tr-md px-4 py-3 max-w-[75%] ml-auto">
                     <p className="font-body text-sm text-amber">
-                      Yes! I'm in Houston with CenterPoint.
+                      Yes, I own my home in Houston.
                     </p>
                   </div>
                   <div className="bg-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
                     <p className="font-body text-sm text-white/70">
-                      Great news — Houston is one of our primary qualifying areas!
-                      Let me connect you with an energy analyst who can review
-                      your home's specifics...
+                      Okay, perfect. About how much do you spend each month
+                      on your utility bill?
                     </p>
                   </div>
                 </div>

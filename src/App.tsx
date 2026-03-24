@@ -9,7 +9,7 @@ import EnergyFlow from "@/components/EnergyFlow";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 
-const ChatWidget = lazy(() => import("@/components/ChatWidget"));
+const ChatWidget = lazy(() => import("@/components/chat/ChatWidget"));
 
 export default function App() {
   return (

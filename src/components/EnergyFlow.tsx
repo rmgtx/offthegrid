@@ -186,42 +186,15 @@ export default function EnergyFlow() {
           </div>
         )}
 
-        {/* Benefits row — aligned to the 4 steps above */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 max-w-5xl mx-auto mb-16">
-          {[
-            {
-              title: "Grid delivers power",
-              desc: "Your home draws power from the grid like normal — but now it has somewhere to store it.",
-            },
-            {
-              title: "Generate energy",
-              desc: "Clean energy from the sun reduces your grid dependence and feeds your battery system.",
-            },
-            {
-              title: "Batteries store backup power",
-              desc: "Your battery system stores energy for when you need it most — outages, peak demand, or emergencies.",
-            },
-            {
-              title: "Home stays powered",
-              desc: "When the grid goes down, your batteries kick in automatically. Your family won't even notice.",
-            },
-          ].map((step, i) => (
-            <motion.div
-              key={step.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.8 + i * 0.15, duration: 0.6 }}
-              className="text-center"
-            >
-              <h3 className="font-heading font-semibold text-white text-base mb-2">
-                {step.title}
-              </h3>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                {step.desc}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+        {/* Summary */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="font-body text-base sm:text-lg text-muted-foreground leading-relaxed text-center max-w-3xl mx-auto mb-16"
+        >
+          Your home draws power from the grid like normal — but now solar panels generate clean energy that feeds directly into your battery system. Those batteries store power for when you need it most: outages, peak demand, or emergencies. When the grid goes down, they kick in automatically — your family won't even notice.
+        </motion.p>
 
         {/* CTA */}
         <motion.div

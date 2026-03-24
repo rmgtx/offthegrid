@@ -42,13 +42,7 @@ export default function ChatWidget() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-open chat after bubble shows
-  useEffect(() => {
-    if (showBubble) {
-      const timer = setTimeout(() => setOpen(true), 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [showBubble]);
+  // Auto-open removed — let the user open the chat when they're ready
 
   // Listen for custom open event from CTA buttons — expand to 1/3 page
   useEffect(() => {
@@ -247,6 +241,7 @@ export default function ChatWidget() {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       placeholder="Type a message..."
+                      aria-label="Type a message"
                       className="flex-1 font-body text-sm bg-secondary/50 border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber/50 placeholder:text-muted-foreground"
                     />
                     <Button

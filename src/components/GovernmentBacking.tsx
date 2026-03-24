@@ -41,7 +41,7 @@ export default function GovernmentBacking() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="program" className="relative py-16 sm:py-20 bg-secondary/50" ref={ref}>
+    <section id="program" className="relative py-16 sm:py-20 bg-secondary/50 scroll-mt-20" ref={ref}>
       {/* Subtle geometric pattern */}
       <div className="absolute inset-0 overflow-hidden">
         <div

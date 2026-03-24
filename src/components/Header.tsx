@@ -23,7 +23,8 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-10 left-0 right-0 z-50 transition-all duration-500 ${
+      style={{ top: "var(--ribbon-h, 40px)" }}
+      className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? "bg-[#0A0A0B]/90 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.04)]"
           : "bg-transparent"
@@ -61,6 +62,7 @@ export default function Header() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
             className={`md:hidden p-2 rounded-lg transition-colors ${
               scrolled
                 ? "text-white hover:bg-white/5"

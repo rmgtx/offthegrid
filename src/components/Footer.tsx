@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react";
+import { Mail, ExternalLink } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -60,9 +60,10 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-body text-sm text-white/40 hover:text-white/70 transition-colors"
+                    className="inline-flex items-center gap-1.5 font-body text-sm text-white/40 hover:text-white/70 transition-colors"
                   >
                     {link.label}
+                    <ExternalLink className="w-3 h-3 shrink-0" />
                   </a>
                 </li>
               ))}

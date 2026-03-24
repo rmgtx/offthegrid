@@ -17,7 +17,7 @@ export default function TexasOutageMap() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { margin: "200px" });
   const [loopT, setLoopT] = useState(0);
-  const startRef = useRef<number>(Date.now());
+  const startRef = useRef<number>(0);
   const frameRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pausedAtRef = useRef<number>(0);
 
@@ -36,6 +36,7 @@ export default function TexasOutageMap() {
     return () => {
       if (frameRef.current) clearInterval(frameRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView]);
 
   // Derived state
@@ -111,7 +112,7 @@ export default function TexasOutageMap() {
                   d={d}
                   style={
                     isBorder
-                      ? { fill: "#1d3a72" }
+                      ? { fill: "var(--color-county-border, #1d3a72)" }
                       : countyStyle(key, loopT)
                   }
                 />
@@ -120,8 +121,8 @@ export default function TexasOutageMap() {
           </g>
 
           {/* Houston marker */}
-          <circle cx="815" cy="820" r="18" fill="rgba(16,185,129,0.15)" />
-          <circle cx="815" cy="820" r="8" fill="#10B981" className="animate-pulse" />
+          <circle cx="815" cy="820" r="18" fill="color-mix(in srgb, var(--color-emerald) 15%, transparent)" />
+          <circle cx="815" cy="820" r="8" fill="var(--color-emerald)" className="animate-pulse" />
           <text
             x="815" y="855"
             textAnchor="middle"
@@ -134,10 +135,10 @@ export default function TexasOutageMap() {
           </text>
 
           {/* Dallas marker */}
-          <circle cx="660" cy="430" r="18" fill="rgba(56,189,248,0.15)" />
+          <circle cx="660" cy="430" r="18" fill="color-mix(in srgb, var(--color-sky) 15%, transparent)" />
           <circle
             cx="660" cy="430" r="8"
-            fill="#38BDF8"
+            fill="var(--color-sky)"
             className="animate-pulse"
             style={{ animationDelay: "1s" }}
           />
@@ -167,9 +168,9 @@ export default function TexasOutageMap() {
                   i < currentMonth
                     ? "#1e3a6e"
                     : i === currentMonth
-                    ? "#F59E0B"
+                    ? "var(--color-amber)"
                     : "rgba(255,255,255,0.08)",
-                boxShadow: i === currentMonth ? "0 0 8px #F59E0B" : "none",
+                boxShadow: i === currentMonth ? "0 0 8px var(--color-amber)" : "none",
               }}
             />
             <span
@@ -177,7 +178,7 @@ export default function TexasOutageMap() {
               style={{
                 fontSize: 11,
                 letterSpacing: "0.05em",
-                color: i === currentMonth ? "#F59E0B" : "rgba(255,255,255,0.3)",
+                color: i === currentMonth ? "var(--color-amber)" : "rgba(255,255,255,0.3)",
                 fontWeight: i === currentMonth ? 700 : 500,
               }}
             >

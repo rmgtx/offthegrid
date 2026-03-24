@@ -53,8 +53,8 @@ export default function Hero() {
         <img
           key={slide.image}
           src={slide.image}
-          alt=""
-          aria-hidden="true"
+          alt={i === current ? slides[current].headline : ""}
+          aria-hidden={i !== current}
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out scale-105 origin-top-right"
           style={{ opacity: i === current ? 1 : 0 }}
         />
@@ -101,6 +101,25 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 w-full pt-28 pb-20">
         <div className="max-w-2xl">
+          {/* h1 stays mounted so the page always has a heading for SEO/a11y */}
+          <h1
+            className="font-display font-extrabold text-5xl sm:text-6xl lg:text-7xl text-white leading-[1.05] mb-6"
+            style={{ textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={`h-${current}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="block"
+              >
+                {slides[current].headline}
+              </motion.span>
+            </AnimatePresence>
+          </h1>
+
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
@@ -112,13 +131,6 @@ export default function Hero() {
               <Badge className="bg-amber/15 text-amber border-amber/20 font-heading text-xs font-semibold tracking-wide uppercase px-3 py-1.5 mb-6 hover:bg-amber/15">
                 {slides[current].accent}
               </Badge>
-
-              <h1
-                className="font-display font-extrabold text-5xl sm:text-6xl lg:text-7xl text-white leading-[1.05] mb-6"
-                style={{ textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}
-              >
-                {slides[current].headline}
-              </h1>
 
               <p
                 className="font-body text-lg sm:text-xl text-white/80 leading-relaxed max-w-xl mb-8"
@@ -157,6 +169,7 @@ export default function Hero() {
               <button
                 key={i}
                 onClick={() => goTo(i)}
+                aria-label={`Go to slide ${i + 1}`}
                 className="py-3 cursor-pointer"
               >
                 <div

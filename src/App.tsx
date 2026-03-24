@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import StickyRibbon from "@/components/StickyRibbon";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
@@ -6,8 +7,9 @@ import OutageStats from "@/components/OutageStats";
 import GovernmentBacking from "@/components/GovernmentBacking";
 import EnergyFlow from "@/components/EnergyFlow";
 import FinalCTA from "@/components/FinalCTA";
-import ChatWidget from "@/components/ChatWidget";
 import Footer from "@/components/Footer";
+
+const ChatWidget = lazy(() => import("@/components/ChatWidget"));
 
 export default function App() {
   return (
@@ -23,7 +25,7 @@ export default function App() {
         <FinalCTA />
       </main>
       <Footer />
-      <ChatWidget />
+      <Suspense><ChatWidget /></Suspense>
     </div>
   );
 }

@@ -92,38 +92,39 @@ export default function FinalCTA() {
             transition={{ delay: 0.3, duration: 0.7 }}
             className="relative"
           >
-            <div className="absolute -inset-4 bg-amber/5 rounded-3xl blur-2xl" />
-            <div aria-hidden="true" className="relative bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-3xl p-8 sm:p-10">
-              <div className="space-y-6">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-full bg-amber/15 flex items-center justify-center">
-                    <MessageCircle className="w-5 h-5 text-amber" />
+            <div className="absolute -inset-4 bg-emerald/5 rounded-3xl blur-2xl" />
+            <div aria-hidden="true" className="relative bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-3xl overflow-hidden">
+              {/* Mock chat header */}
+              <div className="flex items-center gap-3 px-6 py-3.5 bg-emerald">
+                <div className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">
+                  <MessageCircle className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="font-heading font-semibold text-white text-sm">
+                    Energy Analyst
                   </div>
-                  <div>
-                    <div className="font-heading font-semibold text-white text-sm">
-                      Energy Analyst
-                    </div>
-                    <div className="flex items-center gap-1.5 font-body text-xs text-white/60">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald" />
-                      Online now
-                    </div>
+                  <div className="flex items-center gap-1.5 font-body text-xs text-white/70">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                    Online now
                   </div>
                 </div>
+              </div>
 
+              <div className="p-6 sm:p-8 space-y-6">
                 {/* Mock chat messages */}
                 <div className="space-y-3">
-                  <div className="bg-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
+                  <div className="bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
                     <p className="font-body text-sm text-white/70">
                       I can help you find out if your home qualifies.
                       Are you a homeowner?
                     </p>
                   </div>
-                  <div className="bg-amber/15 rounded-2xl rounded-tr-md px-4 py-3 max-w-[75%] ml-auto">
-                    <p className="font-body text-sm text-amber">
+                  <div className="bg-emerald rounded-2xl rounded-tr-md px-4 py-3 max-w-[75%] ml-auto">
+                    <p className="font-body text-sm text-white">
                       Yes, I own my home in Houston.
                     </p>
                   </div>
-                  <div className="bg-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
+                  <div className="bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
                     <p className="font-body text-sm text-white/70">
                       Okay, perfect. About how much do you spend each month
                       on your utility bill?
@@ -132,11 +133,13 @@ export default function FinalCTA() {
                 </div>
 
                 {/* Fake input */}
-                <div className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3">
-                  <span className="font-body text-sm text-white/40 flex-1">
+                <div className="flex items-center gap-2 bg-[#1A1A1A] border border-white/[0.08] rounded-full px-4 py-3">
+                  <span className="font-body text-sm text-white/30 flex-1">
                     Type a message...
                   </span>
-                  <ArrowRight className="w-4 h-4 text-amber" />
+                  <div className="w-8 h-8 rounded-full bg-emerald flex items-center justify-center">
+                    <ArrowRight className="w-3.5 h-3.5 text-white" />
+                  </div>
                 </div>
               </div>
             </div>

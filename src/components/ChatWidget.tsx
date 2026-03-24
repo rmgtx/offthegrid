@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { MessageCircle, X, Send, ArrowLeft } from "lucide-react";
 
 interface Message {
   role: "assistant" | "user";
   text: string;
+  typing?: boolean;
 }
 
 const INITIAL_MESSAGES: Message[] = [
@@ -60,25 +60,32 @@ export default function ChatWidget() {
     setInput("");
     setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
 
-    // Streamlined flow responses
+    // Show typing indicator
     const currentStep = flowStep;
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", text: "", typing: true },
+    ]);
+
     if (currentStep < FLOW_QUESTIONS.length) {
       setFlowStep(currentStep + 1);
       setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", text: FLOW_QUESTIONS[currentStep] },
-        ]);
+        setMessages((prev) =>
+          prev
+            .filter((m) => !m.typing)
+            .concat({ role: "assistant", text: FLOW_QUESTIONS[currentStep] })
+        );
       }, 1200);
     } else {
       setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            text: "Really appreciate you sharing that. Let me pull up a few options based on what you've told me — one sec.",
-          },
-        ]);
+        setMessages((prev) =>
+          prev
+            .filter((m) => !m.typing)
+            .concat({
+              role: "assistant",
+              text: "Really appreciate you sharing that. Let me pull up a few options based on what you've told me — one sec.",
+            })
+        );
         setTimeout(() => {
           setMessages((prev) => [
             ...prev,
@@ -102,13 +109,13 @@ export default function ChatWidget() {
       <AnimatePresence>
         {showBubble && !open && (
           <motion.div
-            className="fixed bottom-6 right-6 z-50 flex items-end gap-3"
+            className="fixed bottom-6 right-4 sm:right-6 z-50 flex items-end gap-3"
             initial={{ opacity: 0, scale: 0, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
-            {/* Prompt bubble — hidden on very small screens (< 400px) */}
+            {/* Prompt bubble — hidden on small screens */}
             <motion.div
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
@@ -123,7 +130,8 @@ export default function ChatWidget() {
 
             <button
               onClick={() => setOpen(true)}
-              className="w-14 h-14 rounded-full bg-amber hover:bg-amber-dark text-navy shadow-[0_4px_20px_rgba(229,169,61,0.4)] hover:shadow-[0_4px_30px_rgba(229,169,61,0.5)] flex items-center justify-center transition-all shrink-0"
+              className="w-14 h-14 rounded-full bg-emerald hover:bg-emerald/90 text-white shadow-[0_4px_20px_rgba(16,185,129,0.4)] hover:shadow-[0_4px_30px_rgba(16,185,129,0.5)] flex items-center justify-center transition-all shrink-0"
+              aria-label="Open chat"
             >
               <MessageCircle className="w-6 h-6" />
             </button>
@@ -135,13 +143,13 @@ export default function ChatWidget() {
       <AnimatePresence>
         {open && (
           <>
-            {/* Mobile: full-screen chat */}
+            {/* Mobile: full-screen chat — z-[70] to sit above ribbon (z-[60]) */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: "100%" }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
+              exit={{ opacity: 0, y: "100%" }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="fixed inset-0 z-50 flex flex-col bg-[#141414] sm:hidden"
+              className="fixed inset-0 z-[70] flex flex-col bg-[#0F0F0F] sm:hidden"
               style={{ height: "100dvh" }}
             >
               <ChatContent
@@ -151,6 +159,7 @@ export default function ChatWidget() {
                 handleSend={handleSend}
                 handleClose={handleClose}
                 messagesEnd={messagesEnd}
+                isMobile
               />
             </motion.div>
 
@@ -160,7 +169,7 @@ export default function ChatWidget() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="fixed bottom-6 right-6 z-50 hidden sm:flex flex-col bg-[#141414] border border-white/[0.06] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden"
+              className="fixed bottom-6 right-6 z-50 hidden sm:flex flex-col bg-[#0F0F0F] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden"
               style={{
                 width: 380,
                 height: 580,
@@ -183,6 +192,26 @@ export default function ChatWidget() {
   );
 }
 
+/** Typing indicator dots */
+function TypingDots() {
+  return (
+    <div className="flex items-center gap-1 px-4 py-3">
+      {[0, 1, 2].map((i) => (
+        <motion.div
+          key={i}
+          className="w-1.5 h-1.5 rounded-full bg-white/40"
+          animate={{ opacity: [0.3, 1, 0.3] }}
+          transition={{
+            duration: 1.2,
+            repeat: Infinity,
+            delay: i * 0.2,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 /** Shared chat content rendered inside both mobile and desktop containers */
 function ChatContent({
   messages,
@@ -191,6 +220,7 @@ function ChatContent({
   handleSend,
   handleClose,
   messagesEnd,
+  isMobile,
 }: {
   messages: Message[];
   input: string;
@@ -198,63 +228,90 @@ function ChatContent({
   handleSend: () => void;
   handleClose: () => void;
   messagesEnd: React.RefObject<HTMLDivElement | null>;
+  isMobile?: boolean;
 }) {
   return (
     <>
       {/* Header */}
-      <div className="flex items-center gap-3 px-5 py-4 bg-navy shrink-0">
-        <div className="w-9 h-9 rounded-full bg-amber/15 flex items-center justify-center">
-          <MessageCircle className="w-4 h-4 text-amber" />
+      <div className="flex items-center gap-3 px-4 sm:px-5 py-3.5 bg-emerald shrink-0">
+        {isMobile && (
+          <button
+            onClick={handleClose}
+            className="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors mr-1"
+            aria-label="Back"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+        )}
+        <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center">
+          <MessageCircle className="w-4 h-4 text-white" />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <div className="font-heading font-semibold text-white text-sm">
             Energy Analyst
           </div>
-          <div className="flex items-center gap-1.5 font-body text-xs text-white/50">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald" />
+          <div className="flex items-center gap-1.5 font-body text-xs text-white/70">
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             Online now
           </div>
         </div>
-        <button
-          onClick={handleClose}
-          className="p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/10 transition-colors"
-          aria-label="Close chat"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {!isMobile && (
+          <button
+            onClick={handleClose}
+            className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="Close chat"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-[#0F0F0F]">
-        {messages.map((msg, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1, duration: 0.3 }}
-            className={`flex ${
-              msg.role === "user" ? "justify-end" : "justify-start"
-            }`}
-          >
-            <div
-              className={`px-4 py-2.5 rounded-2xl max-w-[85%] ${
-                msg.role === "user"
-                  ? "bg-amber text-navy rounded-tr-md font-body text-sm"
-                  : "bg-[#1E1E1E] text-white/80 border border-white/[0.06] rounded-tl-md font-body text-sm shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
+      <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 space-y-3 bg-[#0F0F0F]">
+        {messages.map((msg, i) =>
+          msg.typing ? (
+            <motion.div
+              key={`typing-${i}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-start"
+            >
+              <div className="bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-tl-md shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+                <TypingDots />
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.3 }}
+              className={`flex ${
+                msg.role === "user" ? "justify-end" : "justify-start"
               }`}
             >
-              {msg.text}
-            </div>
-          </motion.div>
-        ))}
+              <div
+                className={`px-4 py-2.5 rounded-2xl max-w-[85%] font-body text-sm ${
+                  msg.role === "user"
+                    ? "bg-emerald text-white rounded-tr-md"
+                    : "bg-[#1A1A1A] text-white/80 border border-white/[0.06] rounded-tl-md shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
+                }`}
+              >
+                {msg.text}
+              </div>
+            </motion.div>
+          )
+        )}
         <div ref={messagesEnd} />
       </div>
 
-      {/* Input — padded for safe area on mobile */}
+      {/* Input */}
       <div
         className="px-4 py-3 border-t border-white/[0.06] bg-[#141414] shrink-0"
         style={{
-          paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))",
+          paddingBottom: isMobile
+            ? "max(0.75rem, env(safe-area-inset-bottom))"
+            : undefined,
         }}
       >
         <form
@@ -270,15 +327,14 @@ function ChatContent({
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type a message..."
             aria-label="Type a message"
-            className="flex-1 font-body text-sm bg-secondary/50 border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber/50 placeholder:text-muted-foreground"
+            className="flex-1 font-body text-sm text-white bg-[#1A1A1A] border border-white/[0.08] rounded-full px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald/30 focus:border-emerald/50 placeholder:text-white/30"
           />
-          <Button
+          <button
             type="submit"
-            size="icon"
-            className="bg-amber hover:bg-amber-dark text-navy rounded-xl w-10 h-10 shrink-0"
+            className="bg-emerald hover:bg-emerald/90 text-white rounded-full w-10 h-10 shrink-0 flex items-center justify-center transition-colors"
           >
             <Send className="w-4 h-4" />
-          </Button>
+          </button>
         </form>
       </div>
     </>

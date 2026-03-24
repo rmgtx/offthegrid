@@ -29,6 +29,7 @@ const FLOW_QUESTIONS: string[] = [
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
+  const [showTeaser, setShowTeaser] = useState(true);
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
   const [flowStep, setFlowStep] = useState(0);
@@ -38,6 +39,17 @@ export default function ChatWidget() {
   useEffect(() => {
     const timer = setTimeout(() => setShowBubble(true), 2000);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Hide teaser text once user scrolls past hero
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.8) {
+        setShowTeaser(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Listen for custom open event from CTA buttons
@@ -115,18 +127,23 @@ export default function ChatWidget() {
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
-            {/* Prompt bubble — hidden on small screens */}
-            <motion.div
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="hidden min-[400px]:block bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-br-md shadow-[0_8px_30px_rgba(0,0,0,0.3)] px-4 py-3 max-w-[220px]"
-            >
-              <p className="font-body text-sm text-white/90 leading-snug">
-                Want to see if your home qualifies for whole-home battery
-                backup?
-              </p>
-            </motion.div>
+            {/* Prompt bubble — hidden on small screens, dismisses on scroll */}
+            <AnimatePresence>
+              {showTeaser && (
+                <motion.div
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.3 }}
+                  className="hidden min-[400px]:block bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-br-md shadow-[0_8px_30px_rgba(0,0,0,0.3)] px-4 py-3 max-w-[220px]"
+                >
+                  <p className="font-body text-sm text-white/90 leading-snug">
+                    Want to see if your home qualifies for whole-home battery
+                    backup?
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <button
               onClick={() => setOpen(true)}

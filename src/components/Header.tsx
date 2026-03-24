@@ -1,17 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const navLinks = [
     { label: "The Program", href: "#program" },
@@ -23,12 +16,7 @@ export default function Header() {
 
   return (
     <header
-      style={{ top: "var(--ribbon-h, 40px)" }}
-      className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-[#0A0A0B]/90 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.04)]"
-          : "bg-transparent"
-      }`}
+      className="relative z-50 bg-transparent"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex h-18 items-center justify-between">
@@ -38,11 +26,7 @@ export default function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 rounded-lg font-heading text-sm font-medium transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber ${
-                  scrolled
-                    ? "text-white/80 hover:text-white hover:bg-white/5"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
-                }`}
+                className="px-4 py-2 rounded-lg font-heading text-sm font-medium transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber text-white/80 hover:text-white hover:bg-white/10"
               >
                 {link.label}
               </a>
@@ -63,11 +47,7 @@ export default function Header() {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className={`md:hidden p-2 rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber ${
-              scrolled
-                ? "text-white hover:bg-white/5"
-                : "text-white hover:bg-white/10"
-            }`}
+            className="md:hidden p-2 rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber text-white hover:bg-white/10"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>

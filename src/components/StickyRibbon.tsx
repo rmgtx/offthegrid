@@ -30,6 +30,13 @@ export default function StickyRibbon() {
     document.documentElement.style.setProperty("--ribbon-h", "0px");
   }, []);
 
+  // Auto-dismiss after 5 seconds
+  useEffect(() => {
+    if (!visible) return;
+    const timer = setTimeout(dismiss, 5000);
+    return () => clearTimeout(timer);
+  }, [visible, dismiss]);
+
   return (
     <>
       {visible && (
@@ -37,10 +44,9 @@ export default function StickyRibbon() {
           ref={ribbonRef}
           className="fixed top-0 left-0 right-0 z-[60] bg-amber text-navy font-body text-xs sm:text-sm font-medium"
         >
-          <div className="relative mx-auto max-w-7xl px-8 pr-10 sm:pr-8 py-2 sm:py-2.5">
-            {/* Desktop: single row centered */}
-            <div className="hidden sm:flex items-center justify-center gap-2 text-center">
-              <span>
+          <div className="relative mx-auto max-w-7xl px-8 pr-10 py-2 sm:py-2.5">
+            <div className="flex items-center justify-center gap-2 text-center">
+              <span className="leading-snug">
                 Government-backed program, funded by federal incentives,
                 protected by Texas law.
               </span>
@@ -58,28 +64,6 @@ export default function StickyRibbon() {
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
-
-            {/* Mobile: compact single line */}
-            <div className="flex sm:hidden items-center justify-center gap-2 text-center">
-              <span className="leading-snug">
-                Government-backed program.{" "}
-                <a
-                  href="#program"
-                  className="underline underline-offset-2 font-semibold hover:text-navy/80 transition-colors"
-                >
-                  Learn more
-                </a>
-              </span>
-            </div>
-
-            {/* Mobile dismiss: absolute top-right X */}
-            <button
-              onClick={dismiss}
-              className="absolute top-2 right-2 sm:hidden p-1 rounded hover:bg-navy/10 transition-colors"
-              aria-label="Dismiss banner"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
           </div>
         </div>
       )}

@@ -120,7 +120,7 @@ export default function ChatWidget() {
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="hidden min-[400px]:block bg-[#1e91d6] rounded-2xl rounded-br-md shadow-[0_8px_30px_rgba(30,145,214,0.25)] px-4 py-3 max-w-[220px]"
+              className="hidden min-[400px]:block bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-br-md shadow-[0_8px_30px_rgba(0,0,0,0.3)] px-4 py-3 max-w-[220px]"
             >
               <p className="font-body text-sm text-white/90 leading-snug">
                 Want to see if your home qualifies for whole-home battery
@@ -133,7 +133,7 @@ export default function ChatWidget() {
               className="w-14 h-14 rounded-full bg-emerald hover:bg-emerald/90 text-white shadow-[0_4px_20px_rgba(16,185,129,0.4)] hover:shadow-[0_4px_30px_rgba(16,185,129,0.5)] flex items-center justify-center transition-all shrink-0"
               aria-label="Open chat"
             >
-              <i className="fi fi-ts-smile-beam text-[22px] leading-none" />
+              <MessageCircle className="w-6 h-6" />
             </button>
           </motion.div>
         )}
@@ -276,7 +276,7 @@ function ChatContent({
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
             >
-              <div className="bg-[#1e91d6] rounded-2xl rounded-tl-md shadow-[0_1px_4px_rgba(30,145,214,0.15)]">
+              <div className="bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-tl-md shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
                 <TypingDots />
               </div>
             </motion.div>
@@ -294,7 +294,7 @@ function ChatContent({
                 className={`px-4 py-2.5 rounded-2xl max-w-[85%] font-body text-sm ${
                   msg.role === "user"
                     ? "bg-emerald text-white rounded-tr-md"
-                    : "bg-[#1e91d6] text-white rounded-tl-md shadow-[0_1px_4px_rgba(30,145,214,0.15)]"
+                    : "bg-[#1A1A1A] text-white/80 border border-white/[0.06] rounded-tl-md shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
                 }`}
               >
                 {msg.text}

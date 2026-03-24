@@ -1,12 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, ArrowLeft } from "lucide-react";
+import { X, Send, ArrowLeft } from "lucide-react";
+import { BatteryChargingVertical } from "@phosphor-icons/react";
 
 interface Message {
   role: "assistant" | "user";
   text: string;
   typing?: boolean;
 }
+
+/** Quick-reply options shown after each assistant question (undefined = free-text only) */
+const QUICK_REPLIES: Record<number, string[]> = {
+  0: ["Yes, I own my home", "No, I rent"],
+  1: ["Under $80", "$80 – $150", "$150 – $250", "$250+"],
+  // step 2 (zip code) has no quick replies — user types freely
+  3: ["Yes, let's do it!", "Not right now"],
+};
 
 const INITIAL_MESSAGES: Message[] = [
   {
@@ -21,18 +30,21 @@ const INITIAL_MESSAGES: Message[] = [
 
 // Streamlined chat flow questions
 const FLOW_QUESTIONS: string[] = [
-  "Great! Do you live in the Houston area — for example, in the CenterPoint service area?",
-  "Got it! Can you tell me about how much you're spending each month on your utilities?",
+  "Great! About how much are you spending each month on your electric bill?",
+  "Got it! And what's your zip code?",
   "Thanks for that! Based on what you've shared, it looks like you may qualify. I'd love to connect you with one of our energy analysts who can review your home's specifics and walk you through everything. Would you like to schedule a quick call?",
 ];
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
-  const [showTeaser, setShowTeaser] = useState(true);
+  const [teaserPhase, setTeaserPhase] = useState<
+    "initial" | "nudge" | "hidden"
+  >("initial");
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
   const [flowStep, setFlowStep] = useState(0);
+  const [showQuickReplies, setShowQuickReplies] = useState(true);
   const messagesEnd = useRef<HTMLDivElement>(null);
 
   // Show chat bubble after delay
@@ -41,16 +53,36 @@ export default function ChatWidget() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Hide teaser text once user scrolls past hero
+  // Teaser bubble lifecycle:
+  //  "initial" for 10s → "nudge" (new message) for 8s → "hidden"
+  //  Also transition to "nudge" on scroll past hero, then hide after delay
   useEffect(() => {
+    if (teaserPhase !== "initial") return;
+
+    let scrollTimer: ReturnType<typeof setTimeout> | null = null;
+
     const onScroll = () => {
-      if (window.scrollY > window.innerHeight * 0.8) {
-        setShowTeaser(false);
+      if (window.scrollY > window.innerHeight * 0.8 && teaserPhase === "initial") {
+        setTeaserPhase("nudge");
+        // Auto-hide the nudge after 6 seconds
+        scrollTimer = setTimeout(() => setTeaserPhase("hidden"), 6000);
       }
     };
+
+    // If user doesn't scroll, transition after 10s anyway
+    const autoTimer = setTimeout(() => {
+      setTeaserPhase("nudge");
+      // Then hide after 6 more seconds
+      setTimeout(() => setTeaserPhase("hidden"), 6000);
+    }, 10000);
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    return () => {
+      clearTimeout(autoTimer);
+      if (scrollTimer) clearTimeout(scrollTimer);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [teaserPhase]);
 
   // Listen for custom open event from CTA buttons
   useEffect(() => {
@@ -66,54 +98,72 @@ export default function ChatWidget() {
     messagesEnd.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const advanceFlow = useCallback(
+    (userText: string) => {
+      setShowQuickReplies(false);
+      setMessages((prev) => [...prev, { role: "user", text: userText }]);
+
+      // Show typing indicator
+      const currentStep = flowStep;
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: "", typing: true },
+      ]);
+
+      if (currentStep < FLOW_QUESTIONS.length) {
+        setFlowStep(currentStep + 1);
+        setTimeout(() => {
+          setMessages((prev) =>
+            prev
+              .filter((m) => !m.typing)
+              .concat({
+                role: "assistant",
+                text: FLOW_QUESTIONS[currentStep],
+              })
+          );
+          setShowQuickReplies(true);
+        }, 1200);
+      } else {
+        setTimeout(() => {
+          setMessages((prev) =>
+            prev
+              .filter((m) => !m.typing)
+              .concat({
+                role: "assistant",
+                text: "Really appreciate you sharing that. Let me pull up a few options based on what you've told me — one sec.",
+              })
+          );
+          setTimeout(() => {
+            setMessages((prev) => [
+              ...prev,
+              {
+                role: "assistant",
+                text: "Okay so based on your area and usage, it looks like your home could be a great fit. I'd love to have one of our energy analysts take a closer look and walk you through everything — they can get a lot more specific to your situation. Want me to set that up?",
+              },
+            ]);
+            setShowQuickReplies(true);
+          }, 2000);
+        }, 1200);
+      }
+    },
+    [flowStep]
+  );
+
   const handleSend = useCallback(() => {
     if (!input.trim()) return;
     const userMsg = input.trim();
     setInput("");
-    setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
-
-    // Show typing indicator
-    const currentStep = flowStep;
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", text: "", typing: true },
-    ]);
-
-    if (currentStep < FLOW_QUESTIONS.length) {
-      setFlowStep(currentStep + 1);
-      setTimeout(() => {
-        setMessages((prev) =>
-          prev
-            .filter((m) => !m.typing)
-            .concat({ role: "assistant", text: FLOW_QUESTIONS[currentStep] })
-        );
-      }, 1200);
-    } else {
-      setTimeout(() => {
-        setMessages((prev) =>
-          prev
-            .filter((m) => !m.typing)
-            .concat({
-              role: "assistant",
-              text: "Really appreciate you sharing that. Let me pull up a few options based on what you've told me — one sec.",
-            })
-        );
-        setTimeout(() => {
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: "assistant",
-              text: "Okay so based on your area and usage, it looks like your home could be a great fit. I'd love to have one of our energy analysts take a closer look and walk you through everything — they can get a lot more specific to your situation. Want me to set that up?",
-            },
-          ]);
-        }, 2000);
-      }, 1200);
-    }
-  }, [input, flowStep]);
+    advanceFlow(userMsg);
+  }, [input, advanceFlow]);
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const teaserText =
+    teaserPhase === "initial"
+      ? "Want to see if your home qualifies for whole-home battery backup?"
+      : "Just tap here when you're ready for me to check your eligibility!";
 
   return (
     <>
@@ -127,10 +177,11 @@ export default function ChatWidget() {
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
-            {/* Prompt bubble — hidden on small screens, dismisses on scroll */}
-            <AnimatePresence>
-              {showTeaser && (
+            {/* Prompt bubble — hidden on small screens, transitions through phases */}
+            <AnimatePresence mode="wait">
+              {teaserPhase !== "hidden" && (
                 <motion.div
+                  key={teaserPhase}
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 10 }}
@@ -138,8 +189,7 @@ export default function ChatWidget() {
                   className="hidden min-[400px]:block bg-[#1A1A1A] border border-white/[0.06] rounded-2xl rounded-br-md shadow-[0_8px_30px_rgba(0,0,0,0.3)] px-4 py-3 max-w-[220px]"
                 >
                   <p className="font-body text-sm text-white/90 leading-snug">
-                    Want to see if your home qualifies for whole-home battery
-                    backup?
+                    {teaserText}
                   </p>
                 </motion.div>
               )}
@@ -150,7 +200,7 @@ export default function ChatWidget() {
               className="w-14 h-14 rounded-full bg-emerald hover:bg-emerald/90 text-white shadow-[0_4px_20px_rgba(16,185,129,0.4)] hover:shadow-[0_4px_30px_rgba(16,185,129,0.5)] flex items-center justify-center transition-all shrink-0"
               aria-label="Open chat"
             >
-              <MessageCircle className="w-6 h-6" />
+              <BatteryChargingVertical size={26} weight="bold" />
             </button>
           </motion.div>
         )}
@@ -177,6 +227,9 @@ export default function ChatWidget() {
                 handleClose={handleClose}
                 messagesEnd={messagesEnd}
                 isMobile
+                flowStep={flowStep}
+                showQuickReplies={showQuickReplies}
+                onQuickReply={advanceFlow}
               />
             </motion.div>
 
@@ -200,6 +253,9 @@ export default function ChatWidget() {
                 handleSend={handleSend}
                 handleClose={handleClose}
                 messagesEnd={messagesEnd}
+                flowStep={flowStep}
+                showQuickReplies={showQuickReplies}
+                onQuickReply={advanceFlow}
               />
             </motion.div>
           </>
@@ -229,6 +285,34 @@ function TypingDots() {
   );
 }
 
+/** Quick-reply pill buttons */
+function QuickReplyButtons({
+  options,
+  onSelect,
+}: {
+  options: string[];
+  onSelect: (text: string) => void;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: 0.15 }}
+      className="flex flex-wrap gap-2 pl-1"
+    >
+      {options.map((opt) => (
+        <button
+          key={opt}
+          onClick={() => onSelect(opt)}
+          className="px-4 py-2 rounded-full font-body text-sm border border-emerald/40 text-emerald bg-emerald/10 hover:bg-emerald/20 hover:border-emerald/60 active:scale-95 transition-all cursor-pointer"
+        >
+          {opt}
+        </button>
+      ))}
+    </motion.div>
+  );
+}
+
 /** Shared chat content rendered inside both mobile and desktop containers */
 function ChatContent({
   messages,
@@ -238,6 +322,9 @@ function ChatContent({
   handleClose,
   messagesEnd,
   isMobile,
+  flowStep,
+  showQuickReplies,
+  onQuickReply,
 }: {
   messages: Message[];
   input: string;
@@ -246,7 +333,13 @@ function ChatContent({
   handleClose: () => void;
   messagesEnd: React.RefObject<HTMLDivElement | null>;
   isMobile?: boolean;
+  flowStep: number;
+  showQuickReplies: boolean;
+  onQuickReply: (text: string) => void;
 }) {
+  const hasTyping = messages.some((m) => m.typing);
+  const quickReplies = QUICK_REPLIES[flowStep];
+
   return (
     <>
       {/* Header */}
@@ -261,7 +354,7 @@ function ChatContent({
           </button>
         )}
         <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center">
-          <MessageCircle className="w-4 h-4 text-white" />
+          <BatteryChargingVertical size={18} weight="bold" className="text-white" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="font-heading font-semibold text-white text-sm">
@@ -319,6 +412,12 @@ function ChatContent({
             </motion.div>
           )
         )}
+
+        {/* Quick-reply buttons */}
+        {showQuickReplies && !hasTyping && quickReplies && (
+          <QuickReplyButtons options={quickReplies} onSelect={onQuickReply} />
+        )}
+
         <div ref={messagesEnd} />
       </div>
 

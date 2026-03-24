@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const navLinks = [
     { label: "The Program", href: "#program" },
@@ -14,14 +15,42 @@ export default function Header() {
 
   const openChat = () => window.dispatchEvent(new CustomEvent("open-chat"));
 
+  // Track scroll for bg treatment
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <header
-      className="relative z-50 bg-transparent"
+      className={`fixed left-0 right-0 z-50 transition-colors duration-300 ${
+        scrolled
+          ? "bg-navy/90 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
+          : "bg-transparent"
+      }`}
+      style={{ top: "var(--ribbon-h, 0px)" }}
     >
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex h-18 items-center justify-between">
-          {/* Nav links (left-aligned) */}
-          <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
+        <div className="flex h-14 sm:h-16 items-center justify-between gap-3">
+          {/* Hamburger — mobile only, left side */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            className="md:hidden p-2 -ml-2 rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber text-white hover:bg-white/10"
+          >
+            {mobileOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </button>
+
+          {/* Desktop nav links */}
+          <nav
+            aria-label="Main navigation"
+            className="hidden md:flex items-center gap-1"
+          >
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -33,28 +62,18 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CTA (right-aligned) */}
-          <div className="hidden md:flex items-center gap-3">
-            <Button
-              onClick={openChat}
-              className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold rounded-lg px-5 shadow-none"
-            >
-              Quick Eligibility Check
-            </Button>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="md:hidden ml-auto p-2 rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber text-white hover:bg-white/10"
+          {/* CTA — ALWAYS visible on all breakpoints */}
+          <Button
+            onClick={openChat}
+            size="sm"
+            className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold rounded-lg px-4 sm:px-5 shadow-none ml-auto text-xs sm:text-sm"
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+            Check Eligibility
+          </Button>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile slide-down menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -63,7 +82,7 @@ export default function Header() {
             exit={{ opacity: 0, height: 0 }}
             role="navigation"
             aria-label="Mobile navigation"
-            className="md:hidden bg-[#141414]/95 backdrop-blur-xl border-t border-border overflow-hidden"
+            className="md:hidden bg-navy/95 backdrop-blur-xl border-t border-white/[0.06] overflow-hidden"
           >
             <div className="px-5 py-4 space-y-1">
               {navLinks.map((link) => (
@@ -76,14 +95,6 @@ export default function Header() {
                   {link.label}
                 </a>
               ))}
-              <div className="pt-3 border-t border-border">
-                <Button
-                  onClick={() => { setMobileOpen(false); openChat(); }}
-                  className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold w-full"
-                >
-                  Quick Eligibility Check
-                </Button>
-              </div>
             </div>
           </motion.div>
         )}

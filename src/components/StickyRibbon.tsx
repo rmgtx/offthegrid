@@ -1,33 +1,82 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { X } from "lucide-react";
 
 export default function StickyRibbon() {
   const [visible, setVisible] = useState(true);
+  const ribbonRef = useRef<HTMLDivElement>(null);
+
+  // Measure the ribbon's actual rendered height and set --ribbon-h dynamically
+  useEffect(() => {
+    if (!visible || !ribbonRef.current) return;
+
+    const el = ribbonRef.current;
+
+    const updateHeight = () => {
+      const h = el.getBoundingClientRect().height;
+      document.documentElement.style.setProperty("--ribbon-h", `${h}px`);
+    };
+
+    // Initial measurement
+    updateHeight();
+
+    const ro = new ResizeObserver(updateHeight);
+    ro.observe(el);
+
+    return () => ro.disconnect();
+  }, [visible]);
 
   const dismiss = useCallback(() => {
     setVisible(false);
     document.documentElement.style.setProperty("--ribbon-h", "0px");
   }, []);
 
-  // Always render spacer so header positioning stays stable
   return (
     <>
       {visible && (
-        <div className="fixed top-0 left-0 right-0 z-[60] bg-amber text-navy font-body text-sm font-medium">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 py-2.5 flex items-center justify-center gap-2 text-center">
-            <span>
-              Government-backed program, funded by federal incentives, protected by Texas law.
-            </span>
-            <a
-              href="#program"
-              className="underline underline-offset-2 font-semibold hover:text-navy/80 transition-colors whitespace-nowrap"
-            >
-              Learn More
-            </a>
+        <div
+          ref={ribbonRef}
+          className="fixed top-0 left-0 right-0 z-[60] bg-amber text-navy font-body text-xs sm:text-sm font-medium"
+        >
+          <div className="relative mx-auto max-w-7xl px-8 pr-10 sm:pr-8 py-2 sm:py-2.5">
+            {/* Desktop: single row centered */}
+            <div className="hidden sm:flex items-center justify-center gap-2 text-center">
+              <span>
+                Government-backed program, funded by federal incentives,
+                protected by Texas law.
+              </span>
+              <a
+                href="#program"
+                className="underline underline-offset-2 font-semibold hover:text-navy/80 transition-colors whitespace-nowrap"
+              >
+                Learn More
+              </a>
+              <button
+                onClick={dismiss}
+                className="ml-2 p-0.5 rounded hover:bg-navy/10 transition-colors shrink-0"
+                aria-label="Dismiss banner"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Mobile: compact single line */}
+            <div className="flex sm:hidden items-center justify-center gap-2 text-center">
+              <span className="leading-snug">
+                Government-backed program.{" "}
+                <a
+                  href="#program"
+                  className="underline underline-offset-2 font-semibold hover:text-navy/80 transition-colors"
+                >
+                  Learn more
+                </a>
+              </span>
+            </div>
+
+            {/* Mobile dismiss: absolute top-right X */}
             <button
               onClick={dismiss}
-              className="ml-2 p-0.5 rounded hover:bg-navy/10 transition-colors shrink-0"
-              aria-label="Dismiss"
+              className="absolute top-2 right-2 sm:hidden p-1 rounded hover:bg-navy/10 transition-colors"
+              aria-label="Dismiss banner"
             >
               <X className="w-3.5 h-3.5" />
             </button>

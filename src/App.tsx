@@ -13,10 +13,16 @@ const ChatWidget = lazy(() => import("@/components/ChatWidget"));
 
 export default function App() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-amber focus:text-navy focus:font-heading focus:font-semibold focus:rounded-lg focus:outline-none"
+      >
+        Skip to main content
+      </a>
       <StickyRibbon />
       <Header />
-      <main>
+      <main id="main-content">
         <Hero />
         <GridVulnerable />
         <OutageStats />

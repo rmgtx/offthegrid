@@ -3,7 +3,7 @@ import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-function FlowArrow({ delay }: { delay: number }) {
+function FlowArrowHorizontal({ delay }: { delay: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
@@ -11,18 +11,25 @@ function FlowArrow({ delay }: { delay: number }) {
       transition={{ delay, duration: 0.4 }}
       className="hidden sm:flex items-center justify-center"
     >
-      <svg width="48" height="24" viewBox="0 0 48 24" fill="none">
-        <line
-          x1="0"
-          y1="12"
-          x2="36"
-          y2="12"
-          stroke="#E5A93D"
-          strokeWidth="2"
-          strokeDasharray="6 4"
-          className="animate-flow-dash"
-        />
+      <svg width="48" height="24" viewBox="0 0 48 24" fill="none" aria-hidden="true">
+        <line x1="0" y1="12" x2="36" y2="12" stroke="#E5A93D" strokeWidth="2" strokeDasharray="6 4" className="animate-flow-dash" />
         <polygon points="36,6 48,12 36,18" fill="#E5A93D" />
+      </svg>
+    </motion.div>
+  );
+}
+
+function FlowArrowVertical({ delay }: { delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay, duration: 0.4 }}
+      className="flex sm:hidden items-center justify-center py-1"
+    >
+      <svg width="24" height="32" viewBox="0 0 24 32" fill="none" aria-hidden="true">
+        <line x1="12" y1="0" x2="12" y2="22" stroke="#E5A93D" strokeWidth="2" strokeDasharray="6 4" className="animate-flow-dash" />
+        <polygon points="6,22 12,32 18,22" fill="#E5A93D" />
       </svg>
     </motion.div>
   );
@@ -80,14 +87,11 @@ export default function EnergyFlow() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-16 sm:mb-20"
+          className="max-w-2xl mb-16 sm:mb-20"
         >
-          <p className="font-heading text-sm font-semibold tracking-widest uppercase text-amber mb-4">
-            The Setup
-          </p>
-          <h2 className="font-display font-extrabold text-4xl sm:text-5xl text-white leading-[1.1] mb-5">
+          <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-white leading-[1.1] mb-5">
             Simple technology.{" "}
-            <span className="accent-glow italic">Powerful protection.</span>
+            <span className="text-amber">Powerful protection.</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground leading-relaxed">
             Here's how your home stays powered when the grid goes down —
@@ -97,7 +101,7 @@ export default function EnergyFlow() {
 
         {/* Flow diagram — 4 steps, no numbers */}
         {isInView && (
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-3 mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-12">
             {/* Grid Power */}
             <FlowStep
               delay={0.1}
@@ -114,7 +118,8 @@ export default function EnergyFlow() {
               }
             />
 
-            <FlowArrow delay={0.2} />
+            <FlowArrowVertical delay={0.15} />
+            <FlowArrowHorizontal delay={0.2} />
 
             {/* Generate Energy (solar) */}
             <FlowStep
@@ -138,7 +143,8 @@ export default function EnergyFlow() {
               }
             />
 
-            <FlowArrow delay={0.4} />
+            <FlowArrowVertical delay={0.35} />
+            <FlowArrowHorizontal delay={0.4} />
 
             {/* Battery Backup — LARGE + GREEN GLOW + CHARGING ANIMATION */}
             <FlowStep
@@ -149,11 +155,8 @@ export default function EnergyFlow() {
               large
               icon={
                 <svg viewBox="0 0 64 64" className="w-16 h-16 sm:w-20 sm:h-20">
-                  {/* Battery body */}
                   <rect x="16" y="12" width="32" height="44" rx="4" stroke="#10B981" strokeWidth="2.5" fill="none" />
-                  {/* Terminal */}
                   <rect x="26" y="8" width="12" height="6" rx="2" fill="#10B981" />
-                  {/* Animated charge bars */}
                   <rect x="22" y="40" width="20" height="6" rx="1.5" fill="#10B981" className="animate-battery-bar-1" />
                   <rect x="22" y="31" width="20" height="6" rx="1.5" fill="#10B981" className="animate-battery-bar-2" />
                   <rect x="22" y="22" width="20" height="6" rx="1.5" fill="#10B981" className="animate-battery-bar-3" />
@@ -161,7 +164,8 @@ export default function EnergyFlow() {
               }
             />
 
-            <FlowArrow delay={0.6} />
+            <FlowArrowVertical delay={0.55} />
+            <FlowArrowHorizontal delay={0.6} />
 
             {/* Your Home */}
             <FlowStep
@@ -183,7 +187,7 @@ export default function EnergyFlow() {
         )}
 
         {/* Benefits row — aligned to the 4 steps above */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-5xl mx-auto mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 max-w-5xl mx-auto mb-16">
           {[
             {
               title: "Grid delivers power",
@@ -209,9 +213,9 @@ export default function EnergyFlow() {
               transition={{ delay: 0.8 + i * 0.15, duration: 0.6 }}
               className="text-center"
             >
-              <h4 className="font-heading font-semibold text-white mb-2">
+              <h3 className="font-heading font-semibold text-white text-base mb-2">
                 {step.title}
-              </h4>
+              </h3>
               <p className="font-body text-sm text-muted-foreground leading-relaxed">
                 {step.desc}
               </p>
@@ -232,8 +236,8 @@ export default function EnergyFlow() {
               className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold text-base rounded-xl px-8 h-13"
               onClick={() => window.dispatchEvent(new CustomEvent("open-chat"))}
             >
-              Quick Eligibility Check
-              <ArrowRight className="w-4 h-4 ml-2 animate-arrow-nudge" />
+              See If You Qualify
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </motion.div>

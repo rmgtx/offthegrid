@@ -44,7 +44,7 @@ export default function Hero() {
   const openChat = () => window.dispatchEvent(new CustomEvent("open-chat"));
 
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden">
+    <section aria-label="Hero" className="relative min-h-[100svh] flex items-center overflow-hidden">
       {/* Background — gradient base + crossfading images */}
       <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy-light to-navy-mid" />
 
@@ -53,8 +53,9 @@ export default function Hero() {
         <img
           key={slide.image}
           src={slide.image}
-          alt={i === current ? slides[current].headline : ""}
-          aria-hidden={i !== current}
+          alt=""
+          role="presentation"
+          loading={i === 0 ? "eager" : "lazy"}
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out scale-105 origin-top-right"
           style={{ opacity: i === current ? 1 : 0 }}
         />
@@ -146,7 +147,7 @@ export default function Hero() {
             <Button
               onClick={openChat}
               size="lg"
-              className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold text-base rounded-xl px-8 h-13 shadow-[0_0_30px_rgba(229,169,61,0.3)] hover:shadow-[0_0_40px_rgba(229,169,61,0.4)] transition-shadow"
+              className="bg-amber hover:bg-amber-dark text-navy font-heading font-semibold text-base rounded-xl px-8 h-13 shadow-[0_0_30px_rgba(229,169,61,0.3)] hover:shadow-[0_0_40px_rgba(229,169,61,0.4)] transition-shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Quick Eligibility Check
               <ArrowRight className="w-4 h-4 ml-2 animate-arrow-nudge" />
@@ -164,19 +165,21 @@ export default function Hero() {
           </div>
 
           {/* Slide indicators */}
-          <div className="flex gap-2">
-            {slides.map((_, i) => (
+          <div className="flex gap-2" role="tablist" aria-label="Hero slides">
+            {slides.map((slide, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                className="py-3 cursor-pointer"
+                role="tab"
+                aria-selected={i === current}
+                aria-label={`Slide ${i + 1}: ${slide.headline}`}
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber rounded"
               >
                 <div
                   className={`h-1 rounded-full transition-all duration-500 ${
                     i === current
                       ? "w-10 bg-amber"
-                      : "w-6 bg-white/15 hover:bg-white/25"
+                      : "w-6 bg-white/30 hover:bg-white/50"
                   }`}
                 />
               </button>

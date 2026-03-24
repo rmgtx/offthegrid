@@ -33,15 +33,15 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex h-18 items-center justify-between">
           {/* Nav links (left-aligned) */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 rounded-lg font-heading text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-lg font-heading text-sm font-medium transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber ${
                   scrolled
-                    ? "text-white/70 hover:text-white hover:bg-white/5"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
+                    ? "text-white/80 hover:text-white hover:bg-white/5"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
                 }`}
               >
                 {link.label}
@@ -63,7 +63,7 @@ export default function Header() {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className={`md:hidden p-2 rounded-lg transition-colors ${
+            className={`md:hidden p-2 rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber ${
               scrolled
                 ? "text-white hover:bg-white/5"
                 : "text-white hover:bg-white/10"
@@ -81,6 +81,8 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
+            role="navigation"
+            aria-label="Mobile navigation"
             className="md:hidden bg-[#141414]/95 backdrop-blur-xl border-t border-border overflow-hidden"
           >
             <div className="px-5 py-4 space-y-1">
@@ -89,7 +91,7 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3 rounded-lg font-heading text-sm font-medium text-white/70 hover:text-white hover:bg-white/5"
+                  className="block px-4 py-3 rounded-lg font-heading text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
                 >
                   {link.label}
                 </a>

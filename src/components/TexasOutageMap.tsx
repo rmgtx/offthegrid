@@ -156,7 +156,7 @@ export default function TexasOutageMap() {
       </div>
 
       {/* Month timeline dots */}
-      <div className="flex items-center gap-2 sm:gap-3 px-2">
+      <div className="flex items-center gap-1 sm:gap-3 px-0 sm:px-2">
         {MONTHS.map((m, i) => (
           <div key={m} className="flex flex-col items-center gap-1.5">
             <div
@@ -176,7 +176,7 @@ export default function TexasOutageMap() {
             <span
               className="font-heading transition-colors duration-300"
               style={{
-                fontSize: 11,
+                fontSize: window.innerWidth < 640 ? 9 : 11,
                 letterSpacing: "0.05em",
                 color: i === currentMonth ? "var(--color-amber)" : "rgba(255,255,255,0.3)",
                 fontWeight: i === currentMonth ? 700 : 500,

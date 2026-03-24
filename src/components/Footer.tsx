@@ -10,7 +10,7 @@ export default function Footer() {
             <h4 className="font-heading font-semibold text-white text-sm mb-4">
               Texas Home Energy Program
             </h4>
-            <p className="font-body text-sm text-white/40 leading-relaxed max-w-xs">
+            <p className="font-body text-sm text-white/60 leading-relaxed max-w-xs">
               Protecting Texas homes with whole-home battery backup through
               the federal Virtual Power Plant program.
             </p>
@@ -30,7 +30,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="font-body text-sm text-white/40 hover:text-white/70 transition-colors"
+                    className="font-body text-sm text-white/60 hover:text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber rounded"
                   >
                     {link.label}
                   </a>
@@ -60,10 +60,11 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-body text-sm text-white/40 hover:text-white/70 transition-colors"
+                    className="inline-flex items-center gap-1.5 font-body text-sm text-white/60 hover:text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber rounded"
                   >
                     {link.label}
-                    <ExternalLink className="w-3 h-3 shrink-0" />
+                    <ExternalLink className="w-3 h-3 shrink-0" aria-hidden="true" />
+                    <span className="sr-only">(opens in new tab)</span>
                   </a>
                 </li>
               ))}
@@ -79,7 +80,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:info@texashomeenergy.com"
-                  className="flex items-center gap-2 font-body text-sm text-white/40 hover:text-white/70 transition-colors"
+                  className="flex items-center gap-2 font-body text-sm text-white/60 hover:text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber rounded"
                 >
                   <Mail className="w-4 h-4" />
                   info@texashomeenergy.com
@@ -91,10 +92,10 @@ export default function Footer() {
 
         {/* Divider */}
         <div className="border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="font-body text-xs text-white/25">
+          <p className="font-body text-xs text-white/50">
             &copy; {new Date().getFullYear()} Texas Home Energy. All rights reserved.
           </p>
-          <p className="font-body text-xs text-white/25">
+          <p className="font-body text-xs text-white/50">
             Serving Houston (CenterPoint) &amp; Dallas (Oncor) areas
           </p>
         </div>

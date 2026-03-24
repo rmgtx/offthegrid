@@ -23,27 +23,20 @@ export default function FinalCTA() {
       <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy-light to-navy-mid" />
       <div className="absolute inset-0 noise-overlay" />
 
-      {/* Glow orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber/8 rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-sky/5 rounded-full blur-[120px]" />
-
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left — copy */}
           <div>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.7 }}
             >
-              <p className="font-heading text-sm font-semibold tracking-widest uppercase text-amber mb-4">
-                Get Started Today
-              </p>
-              <h2 className="font-display font-extrabold text-4xl sm:text-5xl text-white leading-[1.1] mb-6">
+              <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-white leading-[1.1] mb-6">
                 Your home energy analyst is{" "}
                 <span className="accent-glow italic">ready to help.</span>
               </h2>
-              <p className="font-body text-lg text-white/50 leading-relaxed mb-8">
+              <p className="font-body text-lg text-white/60 leading-relaxed mb-8">
                 A quick conversation with one of our energy analysts is all it
                 takes. They'll review your specific situation and walk you through
                 exactly how the program works for your home — no pressure, no
@@ -86,8 +79,8 @@ export default function FinalCTA() {
                   window.dispatchEvent(event);
                 }}
               >
-                Quick Eligibility Check
-                <ArrowRight className="w-4 h-4 ml-2 animate-arrow-nudge" />
+                Talk to an Energy Analyst
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </motion.div>
           </div>
@@ -100,7 +93,7 @@ export default function FinalCTA() {
             className="relative"
           >
             <div className="absolute -inset-4 bg-amber/5 rounded-3xl blur-2xl" />
-            <div className="relative bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-3xl p-8 sm:p-10">
+            <div aria-hidden="true" className="relative bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-3xl p-8 sm:p-10">
               <div className="space-y-6">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-full bg-amber/15 flex items-center justify-center">
@@ -110,7 +103,7 @@ export default function FinalCTA() {
                     <div className="font-heading font-semibold text-white text-sm">
                       Energy Analyst
                     </div>
-                    <div className="flex items-center gap-1.5 font-body text-xs text-white/40">
+                    <div className="flex items-center gap-1.5 font-body text-xs text-white/60">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald" />
                       Online now
                     </div>
@@ -140,7 +133,7 @@ export default function FinalCTA() {
 
                 {/* Fake input */}
                 <div className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3">
-                  <span className="font-body text-sm text-white/25 flex-1">
+                  <span className="font-body text-sm text-white/40 flex-1">
                     Type a message...
                   </span>
                   <ArrowRight className="w-4 h-4 text-amber" />

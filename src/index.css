@@ -203,18 +203,29 @@
     animation: arrow-nudge 3s ease-in-out infinite;
 }
 
-/* Accent headline text — gradient + glow for catchy phrases */
+/* Accent headline text — warm gold with subtle glow */
 .accent-glow {
-    background: linear-gradient(135deg, #E5A93D 0%, #F0D078 50%, #E5A93D 100%);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 18px rgba(229, 169, 61, 0.35));
-    animation: accent-shimmer 4s ease-in-out infinite;
+    color: #E5A93D;
+    text-shadow: 0 0 24px rgba(229, 169, 61, 0.35);
 }
 
 @keyframes accent-shimmer {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
+}
+
+/* Respect reduced-motion preferences (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+    .animate-hero-gradient,
+    .animate-float,
+    .animate-pulse-glow,
+    .animate-flow-dash,
+    .animate-battery-bar-1,
+    .animate-battery-bar-2,
+    .animate-battery-bar-3,
+    .animate-bounce-in,
+    .animate-arrow-nudge,
+    .accent-glow {
+        animation: none !important;
+    }
 }

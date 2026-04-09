@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, ArrowLeft } from "lucide-react";
 import { BatteryChargingVertical } from "@phosphor-icons/react";
-import { useChatFlow } from "./use-chat-flow";
+import { useN8nChat } from "./use-n8n-chat";
 import { useTeaser } from "./use-teaser";
 import type { Message } from "./types";
 
@@ -12,7 +12,7 @@ export default function ChatWidget() {
   const messagesEnd = useRef<HTMLDivElement>(null);
 
   const teaser = useTeaser(undefined, open);
-  const [flow, actions] = useChatFlow();
+  const [flow, actions] = useN8nChat();
 
   // Listen for custom open event from CTA buttons
   useEffect(() => {
